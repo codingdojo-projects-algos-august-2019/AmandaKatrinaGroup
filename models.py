@@ -19,6 +19,18 @@ class User(db.Model):
     updated_at = db.Column(db.DateTime, server_default=func.now(), onupdate=func.now())
 
     @classmethod
+    def email_taken(cls, data):
+        is_valid = False
+        message = 'Enter a valid email'
+        if email_validator.match(data):
+            is_valid = True
+            email_check = User.query.filter(User.email.ilike("%{}%".format(data))).first()
+            if email_check:
+                is_valid = False
+                message = 'Email already exists'
+        return {'available': is_valid, 'message': message}
+
+    @classmethod
     def validate_user(cls, data):
         is_valid = True
         if len(data['first_name']) > 1:
@@ -75,13 +87,14 @@ class User(db.Model):
 
     @classmethod
     def login_user(cls, data):
-        result = User.query.filter_by(email=data['email']).first()
+        result = User.query.filter(User.email.ilike("%{}%".format(data['email']))).first()
         if result:
             if bcrypt.check_password_hash(result.password, data['password']):
                 # if we get True after checking the password, we may put the user id in session
                 db.session.commit()
                 return result
-        return None
+        return False
+    # TODO: Might add some sort of user active area
 
 
 class UserSchema(Schema):
@@ -98,7 +111,7 @@ class UserSchema(Schema):
     you need to use exclude=['messages']
     """
 
-
+#might use schema for more later
 user_schema = UserSchema()
 users_schema = UserSchema(many=True, exclude=['password'])
 
