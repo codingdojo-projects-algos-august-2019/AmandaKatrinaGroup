@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css?family=Grand+Hotel&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+* {
+  margin: 0;
+  padding: 0;
+}
+.hover:hover {
+    cursor: pointer;
+    text-decoration: underline !important;
+}
+.navbar-brand {
+    font-family: 'Grand Hotel', cursive;
+    font-size: 2em;
+}
+.alerts {
+    position: absolute;
+    right: 0;
+    width: 30%;
+    z-index: 1000;
+}
+.alert-success {
+    background-color: green;
+    color: white;
+}
+.alert-error {
+    color: white;
+    background-color: red;
+}
+.alert-warning {
+    background-color: orange;
+    color: white;
+}
+.alert-info {
+    background-color: cornflowerblue;
+    color: white;
+}
+.icon-alert, .icon-message {
+    position: relative;
+    top: 5px;
+}
+.link {
+    cursor: pointer;
+}
+.inline {
+    display: inline-block !important;
+}
+.card {
+    border-radius: 0 !important;
+}
+.btn {
+    border-radius: 0 !important;
+}
+.info {
+    min-width: 400px;
+}
+#formUpload {
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
+}
+.hidden {
+    display: none;
+}
+.disabled {
+    cursor: not-allowed;
+}
+#puppyImg img{
+    width: 50%;
+    height: auto;
+}
+.center {
+    vertical-align: middle;
+}
+#email_status, #pw_status {
+    position: absolute;
+    font-style: italic;
+}
+.scroll-items::-webkit-scrollbar { width: 0 !important }
+.container::-webkit-scrollbar { width: 0 !important }
+
+@media screen and (max-width: 400px) {
+    input[type=file] {
+        background-color: whitesmoke;
+        box-shadow: 1px 1px 1px #dadada;
+        border: 1px solid lightgray;
+        margin-bottom: 5px;
+    }
+}
+@media screen and (max-width: 768px) {
+    .alerts {
+        width: 75%;
+    }
+}
+@media screen and (min-width: 540px) {
+    #login_section, #register_section {
+        width: 50% !important;
+    }
+}
+@media screen and (max-width: 540px) {
+    .alerts {
+        width: 100%;
+    }
+}
+/* to make tables turn in to cards
+on smaller screens
+ */
+@media screen and (max-width: 600px) {
+    .table-card table {
+        border: 0;
+    }
+    .table-card table thead {
+        display: none;
+    }
+    .table-card table tr {
+        margin-bottom: 20px;
+        display: block;
+        border-bottom: 2px solid #ddd;
+        box-shadow: 2px 2px 1px #dadada;
+    }
+    .table-card table td {
+        display: block;
+        text-align: right;
+        font-size: 13px;
+    }
+    .table-card table td:last-child {
+        border-bottom: 0;
+    }
+    .table-card table td:last-child {
+        border-bottom: 0;
+    }
+    .table-card table td::before {
+        content: attr(data-label);
+        float: left;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+    .table-card tbody {
+        line-height: 0 !important;
+    }
+}
