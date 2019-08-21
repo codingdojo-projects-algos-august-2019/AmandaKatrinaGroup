@@ -1,5 +1,6 @@
 from config import db, bcrypt, ma
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship, backref
 from flask import session, flash
 import re
 from marshmallow import Schema, fields
@@ -111,7 +112,41 @@ class UserSchema(Schema):
     you need to use exclude=['messages']
     """
 
-#might use schema for more later
+
+# might use schema for more later
 user_schema = UserSchema()
 users_schema = UserSchema(many=True, exclude=['password'])
+
+
+class BreakupRequest(db.Model):
+    __tablename__ = "breakup_requests"
+    id = db.Column(db.Integer, primary_key=True)
+    request_user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    request_user = db.relationship('User', foreign_keys=[request_user_id],
+                                   backref=backref("user_requests", cascade="all,delete"))
+    recipient_name = db.Column(db.String(45))
+    recipient_gender = db.Column(db.String(45))
+    created_at = db.Column(db.DateTime, server_default=func.now())
+    updated_at = db.Column(db.DateTime, server_default=func.now(), onupdate=func.now())
+
+    # relationship
+    reasons_for_breakup = db.relationship('Tag', secondary="breakup_tags")
+
+
+class Tag(db.Model):
+    __tablename__ = "tags"
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(45))
+    created_at = db.Column(db.DateTime, server_default=func.now())
+    updated_at = db.Column(db.DateTime, server_default=func.now(), onupdate=func.now())
+
+
+class BreakupRequestTags(db.Model):
+    __tablename__ = "breakup_tags"
+    id = db.Column(db.Integer, primary_key=True)
+    tag_id = db.Column(db.Integer, db.ForeignKey('tags.id'), nullable=False)
+    tag = db.relationship('Tag', foreign_keys=[tag_id],
+                          backref=backref("reasons_to_breakup", cascade="all,delete"))
+    request_id = db.Column(db.Integer, db.ForeignKey('breakup_requests.id'), nullable=False)
+
 
