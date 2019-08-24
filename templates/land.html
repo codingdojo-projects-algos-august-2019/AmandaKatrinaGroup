@@ -45,11 +45,14 @@
                         <a class="nav-link" href="#">Contact</a>
                     </li>
                     <li class="nav-item">
-                        <input type="submit" value="Login/Register" class="btn btn-secondary">
+                      <li class="nav-item">
+                          <input type="submit" value="Login/Register" class="btn btn-secondary">
+                      </li>
+                  {% if session['userid']  %}
+                    <a href="/logout" class="btn btn-primary">Logout</a>
+                  {% endif %}
                     </li>
-                    <!-- <li class="nav-item">
-            <input type="submit" value="Logout" class="btn btn-primary">
-          </li> -->
+
                 </ul>
             </div>
         </div>

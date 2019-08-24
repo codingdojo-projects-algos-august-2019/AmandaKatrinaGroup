@@ -111,11 +111,14 @@ user_schema = UserSchema()
 class Blog(db.Model):
     __tablename__ = "blogs"
     id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(55))
     content = db.Column(db.Text)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     user = db.relationship('User', foreign_keys=[user_id], backref="user_blogs")
+    pic_filepath = db.Column(db.Text)
     created_at = db.Column(db.DateTime, server_default=func.now())
     updated_at = db.Column(db.DateTime, server_default=func.now(), onupdate=func.now())
+    tags_for_blog = db.relationship('Tags', secondary="blog_tags")
 
     @classmethod
     def validate_blog(cls, data):
@@ -133,10 +136,18 @@ class Blog(db.Model):
         db.session.commit()
         return new_blog
 
+    @classmethod
+    def update_picture(cls, data):
+        blog = Blog(data['id'])
+        blog.pic_filepath = data['filepath']
+        db.session.commit()
+        return
+
 
 class BlogSchema(Schema):
     id = fields.Integer()
     content = fields.String()
+    title = fields.String()
     user_id = fields.Integer()
     created_at = fields.DateTime()
     updated_at = fields.DateTime()
@@ -184,3 +195,27 @@ class CommentSchema(Schema):
 
 
 comment_schema = CommentSchema()
+
+
+class Tags(db.Model):
+    __tablename__ = "tags"
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(20))
+    created_at = db.Column(db.DateTime, server_default=func.now())
+    updated_at = db.Column(db.DateTime, server_default=func.now(), onupdate=func.now())
+
+
+class TagSchema(Schema):
+    id = fields.Integer()
+    text = fields.String()
+
+
+tag_schema = TagSchema()
+
+
+class BlogTags(db.Model):
+    __tablename__ = "blog_tags"
+    id = db.Column(db.Integer, primary_key=True)
+    tag_id = db.Column(db.Integer, db.ForeignKey('tags.id'), nullable=False)
+    blog_id = db.Column(db.Integer, db.ForeignKey('blogs.id'), nullable=False)
+
