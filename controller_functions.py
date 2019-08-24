@@ -1,6 +1,6 @@
 # conveniently, Flask has a jsonify function
 from flask import render_template, request, redirect, session, url_for, flash, jsonify
-from models import User, user_schema
+from models import User, user_schema, Blog, blog_schema, Comment, comment_schema
 from config import db, app
 from dateutil.parser import parse
 
@@ -56,9 +56,37 @@ def logout():
 
 
 def dashboard():
-    user_obj = User.query.get(session['userid'])
-    user_obj_info = user_schema.dump(user_obj)
-    return render_template('index.html', user=user_obj_info.data)
+    user = User.query.get(session['userid'])
+    return render_template('index.html', user=user)
+
+
+# blog functions
+def show_blogs():
+    blogs = Blog.query.all()
+    return render_template('index.html', blogs=blogs)
+
+
+def show_blog(id):
+    blog = Blog.query.get(id)
+    return render_template('index.html', blog=blog)
+
+
+def create_blog():
+    if 'userid' not in session:
+        return redirect('/')
+    return redirect('/')
+
+
+def edit_blog(id):
+    if 'userid' not in session:
+        return redirect('/')
+    return redirect('/')
+
+
+def delete_blog(id):
+    if 'userid' not in session:
+        return redirect('/')
+    return redirect('/')
 
 
 # extra functions
