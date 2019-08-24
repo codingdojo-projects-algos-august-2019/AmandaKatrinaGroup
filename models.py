@@ -1,5 +1,6 @@
 from config import db, bcrypt, ma
 from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship, backref
 from flask import session, flash
 import re
 from marshmallow import Schema, fields
@@ -90,11 +91,8 @@ class User(db.Model):
         result = User.query.filter(User.email.ilike("%{}%".format(data['email']))).first()
         if result:
             if bcrypt.check_password_hash(result.password, data['password']):
-                # if we get True after checking the password, we may put the user id in session
-                db.session.commit()
                 return result
         return False
-    # TODO: Might add some sort of user active area
 
 
 class UserSchema(Schema):
@@ -105,13 +103,84 @@ class UserSchema(Schema):
     password = fields.String()
     created_at = fields.DateTime()
     updated_at = fields.DateTime()
-    """ here you would add any schemas of keys 
-    messages = fields.Nested('MessageSchema', many=True)
-    -- On whatever you are nesting if this Schema is part of that Schema
-    you need to use exclude=['messages']
-    """
 
-#might use schema for more later
+
 user_schema = UserSchema()
-users_schema = UserSchema(many=True, exclude=['password'])
 
+
+class Blog(db.Model):
+    __tablename__ = "blogs"
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship('User', foreign_keys=[user_id], backref="user_blogs")
+    created_at = db.Column(db.DateTime, server_default=func.now())
+    updated_at = db.Column(db.DateTime, server_default=func.now(), onupdate=func.now())
+
+    @classmethod
+    def validate_blog(cls, data):
+        is_valid = True
+        if len(data['content']) < 5:
+            is_valid = False
+            flash('Blog must be 5 characters long', 'error')
+
+        return is_valid
+
+    @classmethod
+    def create_blog(cls, data):
+        new_blog = Blog(**data)
+        db.session.add(new_blog)
+        db.session.commit()
+        return new_blog
+
+
+class BlogSchema(Schema):
+    id = fields.Integer()
+    content = fields.String()
+    user_id = fields.Integer()
+    created_at = fields.DateTime()
+    updated_at = fields.DateTime()
+
+
+blog_schema = BlogSchema()
+
+
+class Comment(db.Model):
+    __tablename__ = "comments"
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text)
+    blog_id = db.Column(db.Integer, db.ForeignKey('blogs.id'), nullable=False)
+    blog = db.relationship('Blog', foreign_keys=[blog_id], backref=backref("blog_comments", cascade="all, delete-orphan"))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship('User', foreign_keys=[user_id],  backref=backref("user_comments", cascade="all, delete-orphan"))
+    created_at = db.Column(db.DateTime, server_default=func.now())
+    updated_at = db.Column(db.DateTime, server_default=func.now(), onupdate=func.now())
+
+
+    @classmethod
+    def validate_comment(cls, data):
+        is_valid = True
+        if len(data['content']) < 5:
+            is_valid = False
+            flash('Comment must be 5 characters long', 'error')
+
+        return is_valid
+
+    @classmethod
+    def create_comment(cls, data):
+        new_comment = Blog(**data)
+        db.session.add(new_comment)
+        db.session.commit()
+        return new_comment
+
+
+class CommentSchema(Schema):
+    id = fields.Integer()
+    content = fields.String()
+    user_id = fields.Integer()
+    blog_id = fields.Integer()
+    created_at = fields.DateTime()
+    updated_at = fields.DateTime()
+
+
+comment_schema = CommentSchema()
