@@ -153,7 +153,7 @@
                     <ul>
                       {%  for other in blog.user.user_blogs %}
                         {%  if other.id != blog.id %}
-                          <li><a href="'/blogs/{{ other.id }}">{{ other.title }}</a></li>
+                          <li><a href="/blogs/{{ other.id }}">{{ other.title }}</a></li>
                       {%  endif %}
                       {%  endfor %}
                     </ul>
