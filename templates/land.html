@@ -107,7 +107,7 @@
                 <div class="card h-100">
                     <a href="#"><img class="card-img-top thumbnail"
                                      src="{%  if blog.pic_filepath %}
-                                     {{ url_for('static', filename='img/' + blog.pic_filepath)}}
+                                     {{ url_for('static', filename='img/blogs/' + blog.pic_filepath)}}
                                      {% else %}
                                      http://placehold.it/700x400
                                       {%  endif %}" alt=""></a>

@@ -1,6 +1,6 @@
 # conveniently, Flask has a jsonify function
 from flask import render_template, request, redirect, session, url_for, flash, jsonify
-from models import User, user_schema, Blog, blog_schema, Comment, comment_schema
+from models import User, user_schema, Blog, blog_schema, Comment, comment_schema, Tags
 from config import db, app
 from dateutil.parser import parse
 from werkzeug.utils import secure_filename
@@ -79,8 +79,25 @@ def show_blog(id):
 
 def create_blog():
     if request.method == 'POST':
-        tags = [x.strip() for x in request.form['tags'].split(',')]
-        print(tags)
+        tags = None
+        if len(request.form['tags']) > 0:
+            tags = [x.strip() for x in request.form['tags'].split(',')]
+        validate_blog = Blog.validate_blog(request.form)
+        if validate_blog:
+            blog_data = blog_schema.dump(request.form)
+            blog_data.data['content'] = request.form['editordata']
+            blog_data.data['user_id'] = session['userid']
+            new_blog = Blog.create_blog(blog_data.data)
+            if tags:
+                Tags.create_tags(data={'tags': tags, 'blog': new_blog.id})
+            file = request.files['file']
+            # if user does not select file, browser also
+            # submit an empty part without filename
+            if file and allowed_file(file.filename):
+                filename = '{}_'.format(new_blog.id) + secure_filename(file.filename)
+                file.save(os.path.join(app.config['BLOG_UPLOAD_FOLDER'], filename))
+                Blog.update_picture(data={'id': new_blog.id, 'filepath': filename})
+            return redirect('/blogs/{}'.format(new_blog.id))
     return render_template('create_blog.html')
 
 
@@ -113,8 +130,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-def upload_blog_picture(id):
-
+def upload_blog_picture(id, filename):
     if 'userid' not in session:
         return redirect('/')
     # check if the post request has the file part
@@ -131,8 +147,8 @@ def upload_blog_picture(id):
         blog = Blog.query.get(id)
         if blog.profile_picture:
             delete_file = secure_filename(blog.profile_picture)
-            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], delete_file))
+            os.remove(os.path.join(app.config['BLOG_UPLOAD_FOLDER'], delete_file))
         filename = '{}_'.format(blog.id) + secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        file.save(os.path.join(app.config['BLOG_UPLOAD_FOLDER'], filename))
         Blog.update_picture(data={'id': id, 'filename': filename})
         return redirect('/blogs/{}'.format(id))

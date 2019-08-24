@@ -82,7 +82,7 @@
                 <!-- Blog Image -->
                 <img class="card-img-top" id="blog_img"
                     src="{%  if blog.pic_filepath %}
-                      {{ url_for('static', filename='img/' + blog.pic_filepath)}}
+                      {{ url_for('static', filename='img/blogs/' + blog.pic_filepath)}}
                           {% else %}
                            http://placehold.it/700x400 {% endif %}"
                     alt="Blog picture">

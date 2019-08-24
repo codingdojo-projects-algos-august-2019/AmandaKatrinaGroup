@@ -8,17 +8,20 @@
   <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
   <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
   <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"></script>
-    <link href="{{url_for('static', filename='css/styles.css')}}" rel="stylesheet">
   <script src="https://kit.fontawesome.com/cf01eb3235.js"></script>
 </head>
 <body>
   <!-- todo figure out how to add a navbar specifically to work with this since its using bootstrap 3 -->
-  <div class="container p-5">
+  <div class="container">
     <h2>Create a New Blog</h2>
     <hr>
-  <form method="post" id="createBlog">
+  <form method="post" id="createBlog" style="padding: 25px"  enctype="multipart/form-data">
+    <label for="title">Title</label>
+    <input type="text" name="title" class="form-control" style="margin-bottom: 10px">
     <label for="summernote">Blog Content:</label>
-    <textarea rows="5" id="summernote" name="editordata" class="form-control mt-3"></textarea>
+    <textarea rows="5" id="summernote" name="editordata" class="form-control"></textarea>
+    <label for="fileUpload">Add Image</label>
+    <input type=file name=file id="fileUpload" style="margin-bottom: 10px">
     <label for="tags">Tags:</label>
     <input type="text" class="form-control" name="tags" id="tags" placeholder="add one word tags separated by comma">
     <hr>
@@ -30,12 +33,20 @@
     $(document).ready(function() {
         $('#summernote').summernote({
             height: 400,
-        toolbar: [
-          // [groupName, [list of button]]
-          ['style', ['bold', 'italic', 'underline', 'clear']],
-          ['para', ['ul', 'ol', 'paragraph']],
-        ]
-      });
+            toolbar: [
+            [ 'style', [ 'style' ] ],
+            [ 'font', [ 'bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear'] ],
+            [ 'fontname', [ 'fontname' ] ],
+            [ 'fontsize', [ 'fontsize' ] ],
+            [ 'color', [ 'color' ] ],
+            [ 'para', [ 'ol', 'ul', 'paragraph', 'height' ] ],
+            [ 'insert', [ 'link'] ],
+            [ 'view', [ 'undo', 'redo', 'fullscreen', 'codeview', 'help' ] ]
+        ],
+            codemirror: { // codemirror options
+              theme: 'monokai'
+          }
+      })
     });
   </script>
     <script src="{{ url_for('static', filename='js/blog.js')}}"></script>

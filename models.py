@@ -125,10 +125,12 @@ class Blog(db.Model):
     @classmethod
     def validate_blog(cls, data):
         is_valid = True
-        if len(data['content']) < 5:
+        if len(data['editordata']) < 10:
             is_valid = False
-            flash('Blog must be 5 characters long', 'error')
-
+            flash('Blog content must be at least 10 characters long', 'error')
+        if len(data['title']) < 5:
+            is_valid = False
+            flash('Blog title must be at least 5 characters long', 'error')
         return is_valid
 
     @classmethod
@@ -140,7 +142,7 @@ class Blog(db.Model):
 
     @classmethod
     def update_picture(cls, data):
-        blog = Blog(data['id'])
+        blog = Blog.query.get(data['id'])
         blog.pic_filepath = data['filepath']
         db.session.commit()
         return
@@ -205,6 +207,22 @@ class Tags(db.Model):
     text = db.Column(db.String(20))
     created_at = db.Column(db.DateTime, server_default=func.now())
     updated_at = db.Column(db.DateTime, server_default=func.now(), onupdate=func.now())
+
+    @classmethod
+    def create_tags(cls, data):
+        for tag in data['tags']:
+            tag_exists = Tags.query.filter_by(text=tag).first()
+            if tag_exists:
+                blog_tag = BlogTags(tag_id=tag_exists.id, blog_id=data['blog'])
+                db.session.add(blog_tag)
+            else:
+                new_tag = Tags(text=tag)
+                db.session.add(new_tag)
+                db.session.commit()
+                blog_tag = BlogTags(tag_id=new_tag.id, blog_id=data['blog'])
+                db.session.add(blog_tag)
+            db.session.commit()
+        return
 
 
 class TagSchema(Schema):
