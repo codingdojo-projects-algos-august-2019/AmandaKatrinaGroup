@@ -69,7 +69,7 @@ def dashboard(user=None):
 # blog functions
 def show_blogs():
     blogs = Blog.query.all()
-    return render_template('index.html', blogs=blogs)
+    return render_template('land.html', blogs=blogs)
 
 
 def show_blog(id):
