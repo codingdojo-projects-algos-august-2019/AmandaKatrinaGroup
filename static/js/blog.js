@@ -1,3 +1,3 @@
 $(document).ready(function(){
-    $('#renderedContent').html($('#contentStr').text());
+    $('#contentStr').html($('#contentStr').text());
 });

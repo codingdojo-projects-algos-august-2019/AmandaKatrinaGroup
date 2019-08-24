@@ -6,10 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Blog Details</title>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet" href="../static/css/styles.css">
     <script src="https://kit.fontawesome.com/cf01eb3235.js"></script>
 </head>
@@ -34,17 +33,24 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/">Dashboard</a>
                     </li>
-                    <li class="nav-item">
-                        <input type="submit" value="Login/Register" class="btn btn-primary">
+                    <li id="loginNavItem" class="nav-item">
+                  {% if not session['userid']  %}
+                      <li class="nav-item">
+                          <input type="button" value="Login/Register" class="btn btn-secondary"
+                          data-toggle="modal" data-target="#loginModal">
+                      </li>
+                    {% else %}
+                    <a id="logoutBtn" class="btn btn-primary text-light" data-redirect="/blogs/{{ blog.id }}">Logout</a>
                     </li>
-                    <!-- <li class="nav-item">
-                    <input type="submit" value="Logout" class="btn btn-primary">
-                  </li> -->
+                   {% endif %}
                 </ul>
             </div>
         </div>
     </nav>
     <!-- NAVIGATION PG END -->
+    <!-- Alert Area -->
+    <ul id="alertArea" class="list-group alerts float-right">
+    </ul>
 
     <!-- Page Content -->
     <div class="container">
@@ -73,16 +79,18 @@
 
                 <hr>
 
-                <!-- Preview Image -->
+                <!-- Blog Image -->
                 <img class="card-img-top" id="blog_img"
-                    src="{{ url_for('static', filename='img/' + blog.pic_filepath)}}"
-                    alt="Card image cap">
+                    src="{%  if blog.pic_filepath %}
+                      {{ url_for('static', filename='img/' + blog.pic_filepath)}}
+                          {% else %}
+                           http://placehold.it/700x400 {% endif %}"
+                    alt="Blog picture">
 
                 <hr>
 
                 <!-- Post Content -->
-                <p id="contentStr" class="d-none">{{ blog.content }}</p>
-                <p id="renderedContent"></p>
+                <p id="contentStr">{{ blog.content }}</p>
 
                 <hr>
 
@@ -171,6 +179,64 @@
 
     </div>
     <!-- /.container -->
+    <!-- Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">Login</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="login_section">
+              <form action='/login' method='post' class="login_page" id="loginForm" autocomplete="off">
+                <p class="mb-4">
+                  <b>Email:</b>
+                  <input type='text' name='email' class="form-control">
+                </p>
+                <p>
+                  <b>Password:</b>
+                  <input type='password' name='password' class="form-control">
+                </p>
+                <input type="submit" class="btn btn-primary my-3" value="Login"
+                       id="loginSubmit" data-redirect="/blogs/{{ blog.id }}">
+              </form>
+              <a id="change_section_register" class="text-primary hover" data-header="Register">Register</a>
+            </div>
+            <div id="register_section">
+             <form class="login_page" id="registerForm" action="/register" method="post" autocomplete="off">
+                <p class="mb-4">
+                  <b>First Name:</b>
+                  <input type='text' name='first_name' class="form-control" id="firstName">
+                </p>
+                <p class="mb-4">
+                  <b>Last Name:</b>
+                  <input type='text' name='last_name' class="form-control" id="lastName">
+                </p>
+               <p class="mb-4">
+                  <b>Email:</b>
+                  <input type='text' name='email' id='email' class="form-control">
+                 <span id="email_status"></span>
+                </p>
+                <p class="mb-4">
+                  <b>Password:</b>
+                  <input type='password' name='password' class="form-control" id="password">
+                </p>
+                <p class="mb-4">
+                  <b>Confirm Password:</b>
+                  <input type='password' name='confirm_password' class="form-control" id="confirm_pw">
+                  <span id="pw_status"></span>
+                </p>
+               <input class="btn btn-success my-3" value="Register" id="registerSubmit">
+             </form>
+             <a id="change_section_login" class="text-primary hover" data-header="Login">Login</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
 
@@ -269,28 +335,12 @@
         </div>
 
     </footer>
+    <script src="{{ url_for('static', filename='js/page.js')}}"></script>
     <script src="{{ url_for('static', filename='js/blog.js')}}"></script>
-
-    <!-- Bootstrap core JavaScript -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous">
-    </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
-    </script>
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous">
-    </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 
 </html>

@@ -53,6 +53,9 @@
         </div>
     </nav>
     <!-- NAVIGATION PG END -->
+    <!-- Alert Area -->
+    <ul id="alertArea" class="list-group alerts float-right">
+    </ul>
 
     <!-- Page Content -->
     <!-- TODO: maybe make this a snippet about the site and like a 'create your own blog' -->
@@ -236,7 +239,7 @@
           </div>
           <div class="modal-body">
             <div id="login_section">
-              <form action='login' method='post' class="login_page" autocomplete="off">
+              <form action='/login' method='post' class="login_page" id="loginForm" autocomplete="off">
                 <p class="mb-4">
                   <b>Email:</b>
                   <input type='text' name='email' class="form-control">
@@ -245,7 +248,8 @@
                   <b>Password:</b>
                   <input type='password' name='password' class="form-control">
                 </p>
-                <input type="submit" class="btn btn-primary my-3" value="Login" id="loginSubmit">
+                <input type="submit" class="btn btn-primary my-3" value="Login"
+                       id="loginSubmit" data-redirect="/dashboard">
               </form>
               <a id="change_section_register" class="text-primary hover" data-header="Register">Register</a>
             </div>

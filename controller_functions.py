@@ -47,14 +47,14 @@ def login():
         result = User.login_user(user.data)
         if result:
             session['userid'] = result.id
-            return redirect('/dashboard')
-        flash('You could not be logged in', 'error')
-    return redirect('/')
+            return {'status': 'logged in'}
+        return {'status': 'error'}
+    return {'status': 'error'}
 
 
 def logout():
     session.clear()
-    return redirect('/')
+    return {'status': 'logged out'}
 
 
 def dashboard(user=None):

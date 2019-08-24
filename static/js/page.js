@@ -222,6 +222,24 @@ $('#like_heart').click(function() {
         });
     return false
 });
+$('#loginForm').submit(function(){
+    const current = window.location.href;
+    $.ajax({
+        url: '/login',
+        method: 'POST',
+        data: $(this).serialize()
+    })
+        .done(function(response){
+            if (response.status === 'error'){
+                alertArea.append(`<li class="alert alert-error" role="alert">Could not be logged in<i class="fas fa-times float-right icon-alert"></i></li>`)
+                deleteAlertHandler();
+                $('.close').click()
+            } else {
+                window.location.href = current;
+            }
+        });
+    return false
+});
 // to click out of alert icons...
 $('.icon-alert').click(function(){
    $(this).parent().css('display', 'none');
@@ -238,3 +256,14 @@ $('.icon-comment').click(function(){
        });
    return false
 });
+$('#logoutBtn').click(function(){
+    const redirection = $(this).attr('data-redirect')
+       $.ajax({
+        url: '/logout',
+        method: 'POST',
+           data: {'url': redirection}
+    })
+       .done(function(){
+           window.location.href = redirection;
+    })
+})
