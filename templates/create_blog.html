@@ -16,7 +16,7 @@
   <div class="container p-5">
     <h2>Create a New Blog</h2>
     <hr>
-  <form method="post">
+  <form method="post" id="createBlog">
     <label for="summernote">Blog Content:</label>
     <textarea rows="5" id="summernote" name="editordata" class="form-control mt-3"></textarea>
     <label for="tags">Tags:</label>
@@ -38,6 +38,6 @@
       });
     });
   </script>
-    <script src="{{ url_for('static', filename='js/page.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/blog.js')}}"></script>
   </body>
 </html>

@@ -79,7 +79,8 @@ def show_blog(id):
 
 def create_blog():
     if request.method == 'POST':
-        print(request.form)
+        tags = [x.strip() for x in request.form['tags'].split(',')]
+        print(tags)
     return render_template('create_blog.html')
 
 
