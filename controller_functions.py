@@ -25,8 +25,6 @@ app.register_error_handler(500, error_page)
 
 
 def index():
-    if 'userid' not in session:
-        return render_template('land.html')
     return redirect('/dashboard')
 
 
@@ -59,9 +57,13 @@ def logout():
     return redirect('/')
 
 
-def dashboard():
-    user = User.query.get(session['userid'])
-    return render_template('index.html', user=user)
+def dashboard(user=None):
+    if 'userid' in session:
+        user = User.query.get(session['userid'])
+    blogs = Blog.query.all()
+    for blog in blogs:
+        blog.comments = len(blog.blog_comments)
+    return render_template('land.html', user=user, blogs=blogs)
 
 
 # blog functions
@@ -76,9 +78,9 @@ def show_blog(id):
 
 
 def create_blog():
-    if 'userid' not in session:
-        return redirect('/')
-    return redirect('/')
+    if request.method == 'POST':
+        print(request.form)
+    return render_template('create_blog.html')
 
 
 def edit_blog(id):

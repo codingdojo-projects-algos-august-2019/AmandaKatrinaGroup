@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Summernote</title>
+  <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"></script>
+    <link href="{{url_for('static', filename='css/styles.css')}}" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/cf01eb3235.js"></script>
+</head>
+<body>
+  <!-- todo figure out how to add a navbar specifically to work with this since its using bootstrap 3 -->
+  <div class="container p-5">
+    <h2>Create a New Blog</h2>
+    <hr>
+  <form method="post">
+    <label for="summernote">Blog Content:</label>
+    <textarea rows="5" id="summernote" name="editordata" class="form-control mt-3"></textarea>
+    <label for="tags">Tags:</label>
+    <input type="text" class="form-control" name="tags" id="tags" placeholder="add one word tags separated by comma">
+    <hr>
+    <input type="submit" value="Post Blog" class="btn btn-primary">
+    <input type="button" id="cancelBtn" value="Cancel" class="btn btn-danger">
+  </form>
+  </div>
+  <script>
+    $(document).ready(function() {
+        $('#summernote').summernote({
+            height: 400,
+        toolbar: [
+          // [groupName, [list of button]]
+          ['style', ['bold', 'italic', 'underline', 'clear']],
+          ['para', ['ul', 'ol', 'paragraph']],
+        ]
+      });
+    });
+  </script>
+    <script src="{{ url_for('static', filename='js/page.js')}}"></script>
+  </body>
+</html>

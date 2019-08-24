@@ -26,50 +26,7 @@
       {% endwith %}
     </ul>
     <div class="container mt-5">
-        <div id="login_section">
-          <h4>Login</h4>
-          <form action='login' method='post' class="login_page" autocomplete="off">
-            <p class="mb-4">
-              <b>Email:</b>
-              <input type='text' name='email' class="form-control">
-            </p>
-            <p>
-              <b>Password:</b>
-              <input type='password' name='password' class="form-control">
-            </p>
-            <input type="submit" class="btn btn-primary my-3" value="Login" id="loginSubmit">
-          </form>
-          <a id="change_section_register" class="text-primary hover">Register</a>
-        </div>
-        <div id="register_section">
-          <h4>Register</h4>
-         <form class="login_page" id="registerForm" action="register" method="post" autocomplete="off">
-            <p class="mb-4">
-              <b>First Name:</b>
-              <input type='text' name='first_name' class="form-control" id="firstName">
-            </p>
-            <p class="mb-4">
-              <b>Last Name:</b>
-              <input type='text' name='last_name' class="form-control" id="lastName">
-            </p>
-           <p class="mb-4">
-              <b>Email:</b>
-              <input type='text' name='email' id='email' class="form-control">
-             <span id="email_status"></span>
-            </p>
-            <p class="mb-4">
-              <b>Password:</b>
-              <input type='password' name='password' class="form-control" id="password">
-            </p>
-            <p class="mb-4">
-              <b>Confirm Password:</b>
-              <input type='password' name='confirm_password' class="form-control" id="confirm_pw">
-              <span id="pw_status"></span>
-            </p>
-           <input class="btn btn-success my-3" value="Register" id="registerSubmit">
-         </form>
-         <a id="change_section_login" class="text-primary hover">Login</a>
-        </div>
+
     </div>
     <script src="{{ url_for('static', filename='js/page.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

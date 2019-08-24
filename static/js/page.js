@@ -84,12 +84,14 @@ $('.icon-alert').click(function(){
 // login function switch between login and register
 $('#change_section_register, #change_section_login').click(function() {
     $('#registerForm')[0].reset();
+    $('#email_status').text('');
+    $('#modalLabel').text($(this).attr('data-header'));
     $('#login_section').toggle();
     $('#register_section').toggle();
 
 });
 $('#cancelBtn').click(function(){
-    window.location.href="/dashboard";
+    window.location.href="/";
 });
 $('#cancelEditBtn').click(function(){
     window.location.href=`/${$(this).attr('data-page')}/${$(this).attr('datasrc')}`;
@@ -143,15 +145,15 @@ $('.deleteLink').click(function(){
          data: $('#registerForm').serialize()
      })
          .done(function(response){
-             if (!emailStatus.hasClass(response.code)) {
-                 emailStatus.removeClass().addClass(response.code)
-             }
-             emailStatus.html(response.message);
-             if (response.code === 'text-danger') {
-                 $('#registerSubmit').addClass('disabled')
-             } else {
-                 $('#registerSubmit').removeClass('disabled')
-             }
+                 if (!emailStatus.hasClass(response.code)) {
+                     emailStatus.removeClass().addClass(response.code)
+                 }
+                 emailStatus.html(response.message);
+                 if (response.code === 'text-danger') {
+                     $('#registerSubmit').addClass('disabled')
+                 } else {
+                     $('#registerSubmit').removeClass('disabled')
+                 }
          });
      return false;
  });

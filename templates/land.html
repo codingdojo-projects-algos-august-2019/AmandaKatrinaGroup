@@ -1,28 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Blogspot</title>
-    <link rel="stylesheet" href="">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.10.1/css/all.css"
-        integrity="sha384-wxqG4glGB3nlqX0bi23nmgwCSjWIW13BdLUEYC4VIMehfbcro/ATkyDsF/AbIOVe" crossorigin="anonymous">
-    <link rel="stylesheet" href="../static/css/styles.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300i,400,700&display=swap" rel="stylesheet">
+    <link href="{{url_for('static', filename='css/styles.css')}}" rel="stylesheet">
+    <title>Doggy Dates</title>
+    <script src="https://kit.fontawesome.com/cf01eb3235.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
-
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
         <div class="container">
-            <a class="navbar-brand" href="#">
-                <img src="http://placehold.it/150x50?text=Logo" alt="">
+          <a class="navbar-brand text-light" href="/">
+                <i class="fas fa-blog mr-3"></i>Blog
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,23 +28,25 @@
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Services</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Contact</a>
-                    </li>
-                    <li class="nav-item">
+                      <!-- we may use this for suggestions page
                       <li class="nav-item">
-                          <input type="submit" value="Login/Register" class="btn btn-secondary">
-                      </li>
-                  {% if session['userid']  %}
-                    <a href="/logout" class="btn btn-primary">Logout</a>
-                  {% endif %}
+                          <a class="nav-link" href="/suggestions">Suggestions</a>
+                      </li> -->
+                    {% if session['userid']  %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/blogs/create">Create New Blog</a>
                     </li>
+                   {% endif %}
+                    <li class="nav-item">
+                  {% if not session['userid']  %}
+                      <li class="nav-item">
+                          <input type="button" value="Login/Register" class="btn btn-secondary"
+                          data-toggle="modal" data-target="#loginModal">
+                      </li>
+                    {% else %}
+                    <a href="/logout" class="btn btn-primary">Logout</a>
+                    </li>
+                   {% endif %}
 
                 </ul>
             </div>
@@ -60,6 +55,7 @@
     <!-- NAVIGATION PG END -->
 
     <!-- Page Content -->
+    <!-- TODO: maybe make this a snippet about the site and like a 'create your own blog' -->
     <div class="container">
 
         <!-- Portfolio Item Heading -->
@@ -82,7 +78,12 @@
                     justo eu
                     convallis placerat, felis enim.</p>
                 <!-- <h3 class="my-3">Create Your Own Blog Post</h3> -->
-                <input type="submit" value="Create New Blog" class="btn btn-info px-5 py-2">
+              {%  if session['userid'] %}
+                <a href="/blogs/create" class="btn btn-info px-5 py-2">Create New Blog</a>
+              {%  else  %}
+              <input type="button" value="Login/Register"
+                     class="btn btn-info px-5 py-2" data-toggle="modal" data-target="#loginModal">
+              {% endif %}
             </div>
         </div>
 
@@ -93,54 +94,33 @@
     <div class="container">
 
         <!-- Page Heading -->
-        <h1 class="my-4">Page Heading
-            <small>Secondary Text</small>
-        </h1>
+        <h2 class="my-4">Popular Posts
+            <small>Top Three:</small>
+        </h2>
 
         <div class="row">
+          {%  for blog in blogs[:3] | sort(attribute='comments', reverse=True) %}
             <div class="col-lg-4 col-sm-6 mb-4">
                 <div class="card h-100">
-                    <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                    <a href="#"><img class="card-img-top thumbnail"
+                                     src="{%  if blog.pic_filepath %}
+                                     {{ url_for('static', filename='img/' + blog.pic_filepath)}}
+                                     {% else %}
+                                     http://placehold.it/700x400
+                                      {%  endif %}" alt=""></a>
                     <div class="card-body">
                         <h4 class="card-title">
-                            <a href="#">Project One</a>
+                            <a href="/blogs/{{ blog.id }}">{{ blog.title }}</a>
                         </h4>
-                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam
-                            aspernatur eum
-                            quasi sapiente nesciunt? Voluptatibus sit, repellat sequi itaque deserunt, dolores in,
-                            nesciunt, illum
-                            tempora ex quae? Nihil, dolorem!</p>
+                        <p class="card-text">
+                          {%  for tag in blog.tags_for_blog %}
+                          <span class="text-primary">#{{ tag.text }}</span>
+                            {%  endfor %}
+                            </p>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-sm-6 mb-4">
-                <div class="card h-100">
-                    <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                    <div class="card-body">
-                        <h4 class="card-title">
-                            <a href="#">Project Two</a>
-                        </h4>
-                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra
-                            euismod odio,
-                            gravida pellentesque urna varius vitae.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-sm-6 mb-4">
-                <div class="card h-100">
-                    <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                    <div class="card-body">
-                        <h4 class="card-title">
-                            <a href="#">Project Three</a>
-                        </h4>
-                        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos quisquam,
-                            error quod sed
-                            cumque, odio distinctio velit nostrum temporibus necessitatibus et facere atque iure
-                            perspiciatis mollitia
-                            recusandae vero vel quam!</p>
-                    </div>
-                </div>
-            </div>
+          {%  endfor %}
         </div>
     </div>
 
@@ -244,27 +224,68 @@
 
         </footer>
     </div>
-
-
+    <!-- Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">Login</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="login_section">
+              <form action='login' method='post' class="login_page" autocomplete="off">
+                <p class="mb-4">
+                  <b>Email:</b>
+                  <input type='text' name='email' class="form-control">
+                </p>
+                <p>
+                  <b>Password:</b>
+                  <input type='password' name='password' class="form-control">
+                </p>
+                <input type="submit" class="btn btn-primary my-3" value="Login" id="loginSubmit">
+              </form>
+              <a id="change_section_register" class="text-primary hover" data-header="Register">Register</a>
+            </div>
+            <div id="register_section">
+             <form class="login_page" id="registerForm" action="register" method="post" autocomplete="off">
+                <p class="mb-4">
+                  <b>First Name:</b>
+                  <input type='text' name='first_name' class="form-control" id="firstName">
+                </p>
+                <p class="mb-4">
+                  <b>Last Name:</b>
+                  <input type='text' name='last_name' class="form-control" id="lastName">
+                </p>
+               <p class="mb-4">
+                  <b>Email:</b>
+                  <input type='text' name='email' id='email' class="form-control">
+                 <span id="email_status"></span>
+                </p>
+                <p class="mb-4">
+                  <b>Password:</b>
+                  <input type='password' name='password' class="form-control" id="password">
+                </p>
+                <p class="mb-4">
+                  <b>Confirm Password:</b>
+                  <input type='password' name='confirm_password' class="form-control" id="confirm_pw">
+                  <span id="pw_status"></span>
+                </p>
+               <input class="btn btn-success my-3" value="Register" id="registerSubmit">
+             </form>
+             <a id="change_section_login" class="text-primary hover" data-header="Login">Login</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- FOOTER END -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous">
-    </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
-    </script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-    </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-    </script>
+
+    <script src="{{ url_for('static', filename='js/page.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 
 </html>
