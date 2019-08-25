@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css?family=Grand+Hotel&display=swap');
+
+.navbar-brand {
+    font-family: 'Grand Hotel', cursive;
+    font-size: 2em;
+}
+
+#other-blogs{
+    padding: 0;
+    margin: 0;
+}
+#other-blogs li{
+    list-style: outside none none;
+}
+blockquote {
+    font-style: italic;
+}
+#blog_img {
+    max-height: 350px;
+}
+.thumbnail {
+    max-height: 200px;
+}
+.navbar-brand {
+    font-family: 'Grand Hotel', cursive;
+    font-size: 2em;
+}
+
+.alerts {
+    position: absolute;
+    right: 0;
+    width: 30%;
+    z-index: 1000;
+}
+
+.alert-success {
+    background-color: green;
+    color: white;
+}
+
+.alert-error {
+    color: white;
+    background-color: red;
+}
+
+.alert-warning {
+    background-color: orange;
+    color: white;
+}
+
+.alert-info {
+    background-color: cornflowerblue;
+    color: white;
+}
+
+.icon-alert,
+.icon-message {
+    position: relative;
+    top: 5px;
+}

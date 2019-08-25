@@ -1,6 +1,8 @@
 $(document).ready(function(){
-    $('#contentStr').html($('#contentStr').text());
 });
 $('#cancelBtn').click(function(){
     window.location.href = '/'
+});
+$('#cancelBtnEdit').click(function(){
+    window.location.href = `/blogs/${$(this).attr('datasrc')}`
 });
