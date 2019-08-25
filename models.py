@@ -144,6 +144,7 @@ class TagSchema(Schema):
 
 tag_schema = TagSchema()
 
+
 class BlogTag(db.Model):
     __tablename__ = "blog_tags"
     id = db.Column(db.Integer, primary_key=True)
@@ -171,7 +172,7 @@ class Blog(db.Model):
     updated_at = db.Column(db.DateTime, server_default=func.now(), onupdate=func.now())
 
     # relationships
-    blog_has_tags = relationship('BlogTag')
+    blog_has_tags = relationship('BlogTag', cascade="all, delete-orphan")
     @classmethod
     def validate_blog(cls, data):
         is_valid = True

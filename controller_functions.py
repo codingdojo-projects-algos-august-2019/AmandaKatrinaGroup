@@ -97,6 +97,9 @@ def show_blogs_by_tag(tag):
 
 
 def create_blog():
+    if 'userid' not in session:
+        flash('Must be logged in to create blog', 'error')
+        return redirect('/')
     if request.method == 'POST':
         tags = None
         if len(request.form['tags']) > 0:
