@@ -45,7 +45,7 @@
       </div>
     </nav>
     <!-- alerts for jinja2 -->
-    <ul class="list-group alerts float-right">
+    <ul id="alertArea" class="list-group alerts float-right">
       {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
       {% for category, message in messages %}
