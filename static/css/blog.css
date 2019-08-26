@@ -3,6 +3,12 @@
 body {
     line-height: 1.5;
 }
+ul {
+    margin-left: 20px;
+}
+#tags {
+    margin-left: 0 !important;
+}
 #other-blogs{
     padding: 0;
     margin: 0;
@@ -53,6 +59,9 @@ blockquote {
     padding-left: .5rem;
     color: white;
 }
+.float-right {
+    float: right;
+}
 .logout {
     color: rgba(255,255,255,.5) !important;
     cursor: pointer;
@@ -83,7 +92,6 @@ blockquote {
     background-color: cornflowerblue;
     color: white;
 }
-
 .icon-alert,
 .icon-message {
     position: relative;

@@ -52,12 +52,18 @@
             </div>
         </div>
     </nav>
-    <!-- NAVIGATION PG END -->
-    <!-- Alert Area -->
-    <ul id="alertArea" class="list-group alerts float-right">
+    <!-- alerts for jinja2 -->
+    <ul id="alertArea" class="list-group alerts">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      {% for category, message in messages %}
+        <li class="alert alert-{{category}}" role="alert">{{message}}
+          <i class="fas fa-times float-right icon-alert"></i>
+        </li>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
     </ul>
-
-    <!-- Page Content -->
     <!-- TODO: maybe make this a snippet about the site and like a 'create your own blog' -->
     <div class="container">
 

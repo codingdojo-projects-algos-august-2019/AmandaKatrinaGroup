@@ -284,17 +284,6 @@ h1 {
     color: rgba(255, 255, 255, .5);
 }
 
-p,
-ul li,
-ol li {
-    font-weight: 300;
-}
-
-ul {
-    margin: 0;
-    padding: 0;
-}
-
 .kilimanjaro_bottom_header_one {
     background-color: #111;
 }
@@ -308,49 +297,17 @@ ul {
     margin: 0;
 }
 
-p,
-ul li,
-ol li {
-    font-weight: 300;
-}
-
 .kilimanjaro_bottom_header_one a {
     color: inherit;
     font-size: 14px;
-}
-
-a,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    font-weight: 400;
 }
 
 .m-top-15 {
     margin-top: 15px;
 }
 
-ul {
-    margin: 0;
-    padding: 0;
-}
-
 .kilimanjaro_widget>li {
     display: inline-block;
-}
-
-p,
-ul li,
-ol li {
-    font-weight: 300;
-}
-
-ol li,
-ul li {
-    list-style: outside none none;
 }
 
 .kilimanjaro_widget a {
@@ -361,11 +318,6 @@ ul li {
     font-size: 13px;
     margin-bottom: 4px;
     padding: 7px 12px;
-}
-
-ul {
-    margin: 0;
-    padding: 0;
 }
 
 .kilimanjaro_links a {
@@ -382,10 +334,6 @@ ul {
     font-size: 13px;
 }
 
-top-15 {
-    margin-top: 15px;
-}
-
 .foo_top_header_one .kilimanjaro_part>h5 {
     color: #fff;
 }
@@ -393,26 +341,6 @@ top-15 {
 .kilimanjaro_part h4,
 .kilimanjaro_part h5 {
     margin-bottom: 30px;
-}
-
-.kilimanjaro_social_links>li {
-    display: inline-block;
-}
-
-p,
-ul li,
-ol li {
-    font-weight: 300;
-}
-
-.kilimanjaro_social_links a {
-    border: 1px solid #333;
-    border-radius: 6px;
-    color: #888;
-    display: inline-block;
-    font-size: 13px;
-    margin-bottom: 3px;
-    padding: 7px 12px;
 }
 
 .kilimanjaro_blog_area .kilimanjaro_date {
@@ -473,7 +401,7 @@ ol li {
 .inline-style .social_links_area>a:hover {
     background-color: transparent;
     color: #27ae60;
-    border: 0px solid transparent;
+    border: 0 solid transparent;
 }
 
 .single_feature:hover .feature_text h4 {
@@ -486,15 +414,6 @@ ol li {
     padding: 0 0 15px 90px;
     position: relative;
     z-index: 1;
-}
-
-.kilimanjaro_links a {
-    border-bottom: 1px solid #333;
-    color: rgba(255, 255, 255, .5);
-    display: block;
-    font-size: 13px;
-    margin-bottom: 5px;
-    padding-bottom: 10px;
 }
 
 /* --------------------------END MAIN-------------------------------- */

@@ -9,10 +9,10 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="../static/css/blog.css">
     <link rel="stylesheet" href="../static/css/styles.css">
     <script src="https://kit.fontawesome.com/cf01eb3235.js"></script>
 </head>
-
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
         <div class="container">
@@ -47,9 +47,17 @@
             </div>
         </div>
     </nav>
-    <!-- NAVIGATION PG END -->
-    <!-- Alert Area -->
+    <!-- alerts for jinja2 -->
     <ul id="alertArea" class="list-group alerts float-right">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      {% for category, message in messages %}
+        <li class="alert alert-{{category}}" role="alert">{{message}}
+          <i class="fas fa-times float-right icon-alert"></i>
+        </li>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
     </ul>
 
     <!-- Page Content -->
@@ -90,7 +98,7 @@
                 <hr>
 
                 <!-- Post Content -->
-                <p id="contentStr">{{ blog.content | safe}}</p>
+                <p id="blogContent">{{ blog.content | safe}}</p>
 
                 <hr>
 
@@ -130,13 +138,13 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-6">
-                                <ul class="list-unstyled mb-0">
-                                    {%  for tag in blog.tags_for_blog %}
+                                <ul id="tags" class="list-unstyled mb-0">
+                                    {%  for tag in blog.blog_has_tags %}
                                   <li>
-                                    <span class="badge badge-primary">{{ tag.text }}</span>
+                                    <span class="badge badge-primary">{{ tag.tag.text }}</span>
                                   </li>
                                   {% endfor %}
-                                {%  if blog.tags_for_blog | length == 0 %}
+                                {%  if blog.blog_has_tags | length == 0 %}
                                 <li>Blog has no tags</li>
                                 {% endif %}
                                 </ul>
@@ -150,12 +158,16 @@
                 <div class="card my-4">
                     <h5 class="card-header">Other Blogs by {{ blog.user.first_name }}</h5>
                     <div class="card-body">
-                    <ul>
+                    <ul id="other-blogs">
                       {%  for other in blog.user.user_blogs %}
                         {%  if other.id != blog.id %}
                           <li><a href="/blogs/{{ other.id }}">{{ other.title }}</a></li>
                       {%  endif %}
                       {%  endfor %}
+                    {%  if blog.user.user_blogs == 1 %}
+                      <li>User has no other blogs</li>
+                    {%  endif %}
+
                     </ul>
 
                     </div>

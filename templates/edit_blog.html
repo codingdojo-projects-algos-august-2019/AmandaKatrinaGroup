@@ -31,6 +31,18 @@
       </ul>
     </div>
   </nav>
+    <!-- alerts for jinja2 -->
+    <ul id="alertArea" class="list-group alerts">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      {% for category, message in messages %}
+        <li class="alert alert-{{category}}" role="alert">{{message}}
+          <i class="fas fa-times float-right icon-alert"></i>
+        </li>
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+    </ul>
   <!-- todo figure out how to add a navbar specifically to work with this since its using bootstrap 3 -->
   <div class="container">
     <h2>Create a New Blog</h2>
