@@ -1,6 +1,8 @@
 # conveniently, Flask has a jsonify function
 from flask import render_template, request, redirect, session, url_for, flash, jsonify
-from models import User, user_schema, Blog, blog_schema, blogs_schema, Comment, comment_schema, Tag, BlogTag
+from models import User, user_schema, update_user_schema,\
+    Blog, blog_schema, blogs_schema,\
+    Comment, comment_schema, Tag, BlogTag
 from config import db, app
 from dateutil.parser import parse
 from werkzeug.utils import secure_filename
@@ -68,6 +70,27 @@ def dashboard(user=None):
         blog['comments'] = len(blog['blog_comments'])
     blogs = sorted(blogs.data, key=itemgetter('comments'), reverse=True)
     return render_template('land.html', user=user, blogs=blogs)
+
+
+# user functions
+def show_user(id):
+    user = User.query.get(id)
+    return render_template('user.html', user=user)
+
+
+def edit_user(id):
+    if 'userid' not in session:
+        return redirect('/')
+    user = User.query.get(id)
+    if user.id != session['userid']:
+        return redirect('/')
+    if request.method == 'POST':
+        user_obj = update_user_schema.dump(request.form)
+        validate_user_data = User.validate_user(user_obj.data)
+        if validate_user_data:
+            User.update_user(user_obj.data)
+            return redirect('/users/{}'.format(id))
+    return render_template('edit_user.html', user=user)
 
 
 # blog functions

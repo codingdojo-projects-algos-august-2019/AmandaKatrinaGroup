@@ -7,6 +7,8 @@ from marshmallow import Schema, fields
 
 email_validator = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 name_validator = re.compile(r'^[-a-zA-Z]+$')
+username_validator = re.compile(r'^[.a-zA-Z]+$')
+twitter_handle_validator = re.compile(r'^[_a-zA-Z0-9]+$')
 
 
 class User(db.Model):
@@ -14,6 +16,10 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(45))
     last_name = db.Column(db.String(45))
+    tagline = db.Column(db.String(100))
+    twitter = db.Column(db.String(15))
+    instagram = db.Column(db.String(30))
+    facebook = db.Column(db.String(50))
     email = db.Column(db.String(45))
     password = db.Column(db.String(100))
     created_at = db.Column(db.DateTime, server_default=func.now())
@@ -96,18 +102,67 @@ class User(db.Model):
                 return result
         return False
 
+    @classmethod
+    def validate_update_data(cls, data):
+        is_valid = True
+        if len(data['facebook']) < 5 or len(data['facebook']) > 50:
+            is_valid = False
+            flash('Facebook username must be between 5-50 characters', 'error')
+        if len(data['instagram']) > 30:
+            is_valid = False
+            flash('Instagram username must be less than 30 characters', 'error')
+        if len(data['twitter']) > 15:
+            is_valid = False
+            flash('Twitter handle must be less than 30 characters', 'error')
+        if not username_validator.match(data['facebook']):
+            is_valid = False
+            flash('Facebook username must contain letters, numbers, or period', 'error')
+        if not twitter_handle_validator.match(data['twitter']):
+            is_valid = False
+            flash('Twitter handle must contain letters, numbers, or underscore', 'error')
+        if not username_validator.match(data['instagram']):
+            is_valid = False
+            flash('Instagram username must contain letters, numbers, or period', 'error')
+        return is_valid
+
+
+    @classmethod
+    def update_user(cls, data):
+        user = User.query.get(data['id'])
+        if len(data['twitter']) > 0:
+            user.twitter = data['twitter']
+        if len(data['instagram']) > 0:
+            user.twitter = data['instagram']
+        if len(data['facebook']) > 0:
+            user.twitter = data['facebook']
+        user.first_name = data['first_name']
+        user.last_name = data['last_name']
+        user.email = data['email']
+        user.tagline = data['tagline']
+        db.session.commit()
+        return user
+
 
 class UserSchema(Schema):
     id = fields.Integer()
     first_name = fields.String()
     last_name = fields.String()
+    tagline = fields.String()
+    twitter = fields.String()
+    facebook = fields.String()
+    instagram = fields.String()
+    profile_picture = fields.String()
     email = fields.String()
     password = fields.String()
     created_at = fields.DateTime()
     updated_at = fields.DateTime()
 
 
-user_schema = UserSchema()
+# used to create a user
+user_schema = UserSchema(exclude=['tagline', 'twitter', 'facebook', 'instagram', 'profile_picture'])
+
+
+update_user_schema = UserSchema(exclude=['password'])
 
 
 class Tag(db.Model):
