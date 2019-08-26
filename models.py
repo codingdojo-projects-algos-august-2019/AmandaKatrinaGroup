@@ -56,7 +56,7 @@ class User(db.Model):
                 flash('Passwords must match', 'error')
         else:
             is_valid = False
-            flash('Password must not be blank', 'error')
+            flash('Password must not be blank', 'error')git
         if len(data['email']) > 1:
             if not email_validator.match(data['email']):
                 is_valid = False
