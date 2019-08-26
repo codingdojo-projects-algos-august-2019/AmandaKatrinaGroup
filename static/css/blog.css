@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css?family=Grand+Hotel&display=swap');
+
+body {
+    line-height: 1.5;
+}
+#other-blogs{
+    padding: 0;
+    margin: 0;
+}
+#other-blogs li{
+    list-style: outside none none;
+}
+#createBlog{
+    padding-left: 4%;
+    padding-right: 4%;
+    margin-bottom: 20px;
+}
+#createBlog .btn {
+    border-radius: 0;
+}
+#createBlog .btn-primary {
+    background-color: #007bff;
+}
+#createBlog .btn-danger {
+    background-color: #dc3545;
+}
+blockquote {
+    font-style: italic;
+}
+#blog_img {
+    max-height: 350px;
+}
+.thumbnail {
+    max-height: 200px;
+}
+.container {
+    margin: 0 auto;
+}
+.navbar-brand {
+    font-family: 'Grand Hotel', cursive;
+    font-size: 2em;
+    color: white !important;
+}
+.navbar {
+    border-radius: 0 !important;
+    padding: .5rem 1rem;
+    line-height: 1.5;
+    background-color: #343a40;
+}
+.navbar-inverse .navbar-nav > li > a{
+    font-size: 16px;
+    padding-right: .5rem;
+    padding-left: .5rem;
+    color: white;
+}
+.logout {
+    color: rgba(255,255,255,.5) !important;
+    cursor: pointer;
+}
+.alerts {
+    position: absolute;
+    right: 0;
+    width: 30%;
+    z-index: 1000;
+}
+
+.alert-success {
+    background-color: green;
+    color: white;
+}
+
+.alert-error {
+    color: white;
+    background-color: red;
+}
+
+.alert-warning {
+    background-color: orange;
+    color: white;
+}
+
+.alert-info {
+    background-color: cornflowerblue;
+    color: white;
+}
+
+.icon-alert,
+.icon-message {
+    position: relative;
+    top: 5px;
+}

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Blog It</title>
+  <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.js"></script>
+  <link href="{{url_for('static', filename='css/blog.css')}}" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/cf01eb3235.js"></script>
+</head>
+<body>
+<!-- NOTE: this page has to use bootstrap 3 due to summernote compatibility -->
+  <nav class="navbar navbar-inverse">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/">
+          <i class="fas fa-blog mr-3"></i>
+          Blog It
+        </a>
+      </div>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/">Home</a></li>
+          {% if session['userid']  %}
+          <li>
+            <a id="logoutBtn" class="logout" data-redirect="/">Logout <i class="fas fa-sign-out-alt"></i></a>
+          </li>
+          {% endif %}
+      </ul>
+    </div>
+  </nav>
+  <div class="container">
+    <h2>Create a New Blog</h2>
+    <div class="row">
+      <div class="col col-md-8">
+    <form method="post" id="createBlog" enctype="multipart/form-data">
+      <label for="title">Title</label>
+      <input type="text" name="title" class="form-control" style="margin-bottom: 10px">
+      <label for="summernote">Blog Content:</label>
+      <textarea rows="5" id="summernote" name="editordata" class="form-control"></textarea>
+      <label for="fileUpload">Add Image</label>
+      <input type=file name=file id="fileUpload" style="margin-bottom: 10px">
+      <label for="tags">Tags:</label>
+      <input type="text" class="form-control" name="tags" id="tags" placeholder="add one word tags separated by comma">
+      <hr>
+      <input type="submit" value="Post Blog" class="btn btn-primary">
+      <input type="button" id="cancelBtn" value="Cancel" class="btn btn-danger">
+    </form>
+    </div>
+      <div class="col col-md-4">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            Tag Ideas
+          </div>
+          <div class="panel-body" style="color: blue">
+            <p>#tags</p>
+            <p>#will</p>
+            <p>#go</p>
+            <p>#here</p>
+            <p>#sorted</p>
+            <p>#by</p>
+            <p>#usage</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    $(document).ready(function() {
+        $('#summernote').summernote({
+            height: 400,
+            toolbar: [
+            [ 'style', [ 'style' ] ],
+            [ 'font', [ 'bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear'] ],
+            [ 'fontname', [ 'fontname' ] ],
+            [ 'fontsize', [ 'fontsize' ] ],
+            [ 'color', [ 'color' ] ],
+            [ 'para', [ 'ol', 'ul', 'paragraph', 'height' ] ],
+            [ 'insert', [ 'link'] ],
+            [ 'view', [ 'undo', 'redo', 'fullscreen', 'codeview', 'help' ] ]
+        ],
+            codemirror: { // codemirror options
+              theme: 'monokai'
+          }
+      })
+    });
+  </script>
+    <script src="{{ url_for('static', filename='js/blog.js')}}"></script>
+  </body>
+</html>

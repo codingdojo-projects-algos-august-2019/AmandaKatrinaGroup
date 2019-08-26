@@ -9,7 +9,13 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///group_project.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'super-secret'  # set a secret key for security purposes
 
+
+BLOG_UPLOAD_FOLDER = 'static/img/blogs'
+
+app.config['BLOG_UPLOAD_FOLDER'] = BLOG_UPLOAD_FOLDER
+
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 bcrypt = Bcrypt(app)
 ma = Marshmallow(app)
+

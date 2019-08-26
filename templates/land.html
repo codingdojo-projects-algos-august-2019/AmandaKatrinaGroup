@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300i,400,700&display=swap" rel="stylesheet">
+    <link href="{{url_for('static', filename='css/styles.css')}}" rel="stylesheet">
+    <title>Doggy Dates</title>
+    <script src="https://kit.fontawesome.com/cf01eb3235.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+        <div class="container">
+          <a class="navbar-brand text-light" href="/">
+                <i class="fas fa-blog mr-3"></i>Blog
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                      <!-- we may use this for suggestions page
+                      <li class="nav-item">
+                          <a class="nav-link" href="/suggestions">Suggestions</a>
+                      </li> -->
+                    {% if session['userid']  %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/blogs/create">Create New Blog</a>
+                    </li>
+                   {% endif %}
+                    <li class="nav-item">
+                  {% if not session['userid']  %}
+                      <li class="nav-item">
+                          <input type="button" value="Login/Register" class="btn btn-secondary"
+                          data-toggle="modal" data-target="#loginModal">
+                      </li>
+                    {% else %}
+                    <a id="logoutBtn" class="btn btn-primary text-light"  data-redirect="/" >Logout</a>
+                    </li>
+                   {% endif %}
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- NAVIGATION PG END -->
+    <!-- Alert Area -->
+    <ul id="alertArea" class="list-group alerts float-right">
+    </ul>
+
+    <!-- Page Content -->
+    <!-- TODO: maybe make this a snippet about the site and like a 'create your own blog' -->
+    <div class="container">
+
+        <!-- Portfolio Item Heading -->
+        <h1 class="my-4">Page Heading
+            <small>Secondary Text</small>
+        </h1>
+
+        <!-- Portfolio Item Row -->
+        <div class="row">
+
+            <div class="col-md-8">
+                <img class="img-fluid" src="http://placehold.it/750x500" alt="">
+            </div>
+
+            <div class="col-md-4">
+                <h3 class="my-3">Blog Pg Description</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida
+                    pellentesque urna
+                    varius vitae. Sed dui lorem, adipiscing in adipiscing et, interdum nec metus. Mauris ultricies,
+                    justo eu
+                    convallis placerat, felis enim.</p>
+                <!-- <h3 class="my-3">Create Your Own Blog Post</h3> -->
+              {%  if session['userid'] %}
+                <a href="/blogs/create" class="btn btn-info px-5 py-2">Create New Blog</a>
+              {%  else  %}
+              <input type="button" value="Login/Register"
+                     class="btn btn-info px-5 py-2" data-toggle="modal" data-target="#loginModal">
+              {% endif %}
+            </div>
+        </div>
+
+    </div>
+    <!-- /.row -->
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <!-- Page Heading -->
+        <h2 class="my-4">Popular Posts
+            <small>Top Three:</small>
+        </h2>
+
+        <div class="row">
+          {%  for blog in blogs[:3] | sort(attribute='comments', reverse=True) %}
+            <div class="col-lg-4 col-sm-6 mb-4">
+                <div class="card h-100">
+                    <a href="#"><img class="card-img-top thumbnail"
+                                     src="{%  if blog.pic_filepath %}
+                                     {{ url_for('static', filename='img/blogs/' + blog.pic_filepath)}}
+                                     {% else %}
+                                     http://placehold.it/700x400
+                                      {%  endif %}" alt=""></a>
+                    <div class="card-body">
+                        <h4 class="card-title">
+                            <a href="/blogs/{{ blog.id }}">{{ blog.title }}</a>
+                        </h4>
+                        <p class="card-text">
+                          {%  for tag in blog.tags_for_blog %}
+                          <span class="text-primary">#{{ tag.text }}</span>
+                            {%  endfor %}
+                            </p>
+                    </div>
+                </div>
+            </div>
+          {%  endfor %}
+        </div>
+    </div>
+
+
+    <div>
+        <!-- FOOTER -->
+        <!--footer starts from here-->
+        <div class="reserved-bot">
+            <p class="text-center">Sample text</p>
+        </div>
+        <footer class="footer">
+            <div class="container bottom_border">
+                <div class="row">
+                    <div class=" col-sm-4 col-md col-sm-4  col-12 col">
+                        <h5 class="headin5_amrc col_white_amrc pt2">Find us</h5>
+                        <!--headin5_amrc-->
+                        <p class="mb10">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
+                            Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+                        <p><i class="fa fa-location-arrow"></i> 9878/25 sec 9 rohini 35 </p>
+                        <p><i class="fa fa-phone"></i> +91-9999878398 </p>
+                        <p><i class="fa fa fa-envelope"></i> info@example.com </p>
+
+
+                    </div>
+
+
+                    <div class=" col-sm-4 col-md  col-6 col">
+                        <h5 class="headin5_amrc col_white_amrc pt2">Quick links</h5>
+                        <!--headin5_amrc-->
+                        <ul class="footer_ul_amrc">
+                            <li><a href="http://webenlance.com">Image Rectoucing</a></li>
+                            <li><a href="http://webenlance.com">Clipping Path</a></li>
+                            <li><a href="http://webenlance.com">Hollow Man Montage</a></li>
+                            <li><a href="http://webenlance.com">Ebay & Amazon</a></li>
+                            <li><a href="http://webenlance.com">Hair Masking/Clipping</a></li>
+                            <li><a href="http://webenlance.com">Image Cropping</a></li>
+                        </ul>
+                        <!--footer_ul_amrc ends here-->
+                    </div>
+
+
+                    <div class=" col-sm-4 col-md  col-6 col">
+                        <h5 class="headin5_amrc col_white_amrc pt2">Quick links</h5>
+                        <!--headin5_amrc-->
+                        <ul class="footer_ul_amrc">
+                            <li><a href="http://webenlance.com">Remove Background</a></li>
+                            <li><a href="http://webenlance.com">Shadows & Mirror Reflection</a></li>
+                            <li><a href="http://webenlance.com">Logo Design</a></li>
+                            <li><a href="http://webenlance.com">Vectorization</a></li>
+                            <li><a href="http://webenlance.com">Hair Masking/Clipping</a></li>
+                            <li><a href="http://webenlance.com">Image Cropping</a></li>
+                        </ul>
+                        <!--footer_ul_amrc ends here-->
+                    </div>
+
+
+                    <div class=" col-sm-4 col-md  col-12 col">
+                        <h5 class="headin5_amrc col_white_amrc pt2">Follow us</h5>
+                        <!--headin5_amrc ends here-->
+
+                        <ul class="footer_ul2_amrc">
+                            <li><a href="#"><i class="fab fa-twitter fleft padding-right"></i> </a>
+                                <p>Lorem Ipsum is simply dummy text of the printing...<a
+                                        href="#">https://www.lipsum.com/</a></p>
+                            </li>
+                            <li><a href="#"><i class="fab fa-twitter fleft padding-right"></i> </a>
+                                <p>Lorem Ipsum is simply dummy text of the printing...<a
+                                        href="#">https://www.lipsum.com/</a></p>
+                            </li>
+                            <li><a href="#"><i class="fab fa-twitter fleft padding-right"></i> </a>
+                                <p>Lorem Ipsum is simply dummy text of the printing...<a
+                                        href="#">https://www.lipsum.com/</a></p>
+                            </li>
+                        </ul>
+                        <!--footer_ul2_amrc ends here-->
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="container">
+                <ul class="foote_bottom_ul_amrc">
+                    <li><a href="http://webenlance.com">Home</a></li>
+                    <li><a href="http://webenlance.com">About</a></li>
+                    <li><a href="http://webenlance.com">Services</a></li>
+                    <li><a href="http://webenlance.com">Pricing</a></li>
+                    <li><a href="http://webenlance.com">Blog</a></li>
+                    <li><a href="http://webenlance.com">Contact</a></li>
+                </ul>
+                <!--foote_bottom_ul_amrc ends here-->
+                <p class="text-center">Copyright @2017 | Designed With by <a href="#">Your Company Name</a></p>
+
+                <ul class="social_footer_ul">
+                    <li><a href="http://webenlance.com"><i class="fab fa-facebook-f"></i></a></li>
+                    <li><a href="http://webenlance.com"><i class="fab fa-twitter"></i></a></li>
+                    <li><a href="http://webenlance.com"><i class="fab fa-linkedin"></i></a></li>
+                    <li><a href="http://webenlance.com"><i class="fab fa-instagram"></i></a></li>
+                </ul>
+                <!--social_footer_ul ends here-->
+            </div>
+
+        </footer>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">Login</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="login_section">
+              <form action='/login' method='post' class="login_page" id="loginForm" autocomplete="off">
+                <p class="mb-4">
+                  <b>Email:</b>
+                  <input type='text' name='email' class="form-control">
+                </p>
+                <p>
+                  <b>Password:</b>
+                  <input type='password' name='password' class="form-control">
+                </p>
+                <input type="submit" class="btn btn-primary my-3" value="Login"
+                       id="loginSubmit" data-redirect="/dashboard">
+              </form>
+              <a id="change_section_register" class="text-primary hover" data-header="Register">Register</a>
+            </div>
+            <div id="register_section">
+             <form class="login_page" id="registerForm" action="register" method="post" autocomplete="off">
+                <p class="mb-4">
+                  <b>First Name:</b>
+                  <input type='text' name='first_name' class="form-control" id="firstName">
+                </p>
+                <p class="mb-4">
+                  <b>Last Name:</b>
+                  <input type='text' name='last_name' class="form-control" id="lastName">
+                </p>
+               <p class="mb-4">
+                  <b>Email:</b>
+                  <input type='text' name='email' id='email' class="form-control">
+                 <span id="email_status"></span>
+                </p>
+                <p class="mb-4">
+                  <b>Password:</b>
+                  <input type='password' name='password' class="form-control" id="password">
+                </p>
+                <p class="mb-4">
+                  <b>Confirm Password:</b>
+                  <input type='password' name='confirm_password' class="form-control" id="confirm_pw">
+                  <span id="pw_status"></span>
+                </p>
+               <input class="btn btn-success my-3" value="Register" id="registerSubmit">
+             </form>
+             <a id="change_section_login" class="text-primary hover" data-header="Login">Login</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- FOOTER END -->
+
+    <script src="{{ url_for('static', filename='js/page.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+
+</html>

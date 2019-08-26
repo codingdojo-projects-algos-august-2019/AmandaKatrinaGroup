@@ -1,6 +1,7 @@
-from config import db, bcrypt, ma
+from config import db, bcrypt
 from sqlalchemy.sql import func
-from flask import session, flash
+from sqlalchemy.orm import relationship, backref
+from flask import flash
 import re
 from marshmallow import Schema, fields
 
@@ -21,13 +22,15 @@ class User(db.Model):
     @classmethod
     def email_taken(cls, data):
         is_valid = False
-        message = 'Enter a valid email'
-        if email_validator.match(data):
-            is_valid = True
-            email_check = User.query.filter(User.email.ilike("%{}%".format(data))).first()
-            if email_check:
-                is_valid = False
-                message = 'Email already exists'
+        message = ''
+        if len(data) > 0:
+            message = 'Enter a valid email'
+            if email_validator.match(data):
+                is_valid = True
+                email_check = User.query.filter(User.email.ilike("%{}%".format(data))).first()
+                if email_check:
+                    is_valid = False
+                    message = 'Email already exists'
         return {'available': is_valid, 'message': message}
 
     @classmethod
@@ -90,11 +93,8 @@ class User(db.Model):
         result = User.query.filter(User.email.ilike("%{}%".format(data['email']))).first()
         if result:
             if bcrypt.check_password_hash(result.password, data['password']):
-                # if we get True after checking the password, we may put the user id in session
-                db.session.commit()
                 return result
         return False
-    # TODO: Might add some sort of user active area
 
 
 class UserSchema(Schema):
@@ -105,13 +105,158 @@ class UserSchema(Schema):
     password = fields.String()
     created_at = fields.DateTime()
     updated_at = fields.DateTime()
-    """ here you would add any schemas of keys 
-    messages = fields.Nested('MessageSchema', many=True)
-    -- On whatever you are nesting if this Schema is part of that Schema
-    you need to use exclude=['messages']
-    """
 
-#might use schema for more later
+
 user_schema = UserSchema()
-users_schema = UserSchema(many=True, exclude=['password'])
+
+
+class Tag(db.Model):
+    __tablename__ = "tags"
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(20))
+    created_at = db.Column(db.DateTime, server_default=func.now())
+    updated_at = db.Column(db.DateTime, server_default=func.now(), onupdate=func.now())
+
+    # relationships
+    tag_has_blogs = relationship('BlogTag')
+
+    @classmethod
+    def create_tags(cls, data):
+        for tag in data['tags']:
+            tag_exists = Tag.query.filter_by(text=tag).first()
+            if tag_exists:
+                blog_tag = BlogTag(tag_id=tag_exists.id, blog_id=data['blog'])
+                db.session.add(blog_tag)
+            else:
+                new_tag = Tag(text=tag)
+                db.session.add(new_tag)
+                db.session.commit()
+                blog_tag = BlogTag(tag_id=new_tag.id, blog_id=data['blog'])
+                db.session.add(blog_tag)
+            db.session.commit()
+        return
+
+
+class TagSchema(Schema):
+    id = fields.Integer()
+    text = fields.String()
+
+
+tag_schema = TagSchema()
+
+
+class BlogTag(db.Model):
+    __tablename__ = "blog_tags"
+    id = db.Column(db.Integer, primary_key=True)
+    tag_id = db.Column(db.Integer, db.ForeignKey('tags.id'), nullable=False)
+    blog_id = db.Column(db.Integer, db.ForeignKey('blogs.id'), nullable=False)
+
+    # relationships
+    tag = relationship('Tag', back_populates="tag_has_blogs")
+    blog = relationship('Blog', back_populates="blog_has_tags")
+
+
+class BlogTagSchema(Schema):
+    tag = fields.Nested('TagSchema', only=['text'])
+
+
+class Blog(db.Model):
+    __tablename__ = "blogs"
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(55))
+    content = db.Column(db.Text)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship('User', foreign_keys=[user_id], backref="user_blogs")
+    pic_filepath = db.Column(db.Text)
+    created_at = db.Column(db.DateTime, server_default=func.now())
+    updated_at = db.Column(db.DateTime, server_default=func.now(), onupdate=func.now())
+
+    # relationships
+    blog_has_tags = relationship('BlogTag', cascade="all, delete-orphan")
+    @classmethod
+    def validate_blog(cls, data):
+        is_valid = True
+        if len(data['editordata']) < 10:
+            is_valid = False
+            flash('Blog content must be at least 10 characters long', 'error')
+        if len(data['title']) < 5:
+            is_valid = False
+            flash('Blog title must be at least 5 characters long', 'error')
+        return is_valid
+
+    @classmethod
+    def create_blog(cls, data):
+        new_blog = Blog(**data)
+        db.session.add(new_blog)
+        db.session.commit()
+        return new_blog
+
+    @classmethod
+    def update_picture(cls, data):
+        blog = Blog.query.get(data['id'])
+        blog.pic_filepath = data['filepath']
+        db.session.commit()
+        return
+
+
+class BlogSchema(Schema):
+    id = fields.Integer()
+    content = fields.String()
+    title = fields.String()
+    pic_filepath = fields.String()
+    blog_comments = fields.Nested('CommentSchema', many=True)
+    blog_has_tags = fields.Nested('BlogTagSchema', many=True)
+    user_id = fields.Integer()
+    created_at = fields.DateTime()
+    updated_at = fields.DateTime()
+
+
+blog_schema = BlogSchema()
+blogs_schema = BlogSchema(many=True)
+
+
+class Comment(db.Model):
+    __tablename__ = "comments"
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text)
+    blog_id = db.Column(db.Integer, db.ForeignKey('blogs.id'), nullable=False)
+    blog = db.relationship('Blog', foreign_keys=[blog_id], backref=backref("blog_comments", cascade="all, delete-orphan"))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user = db.relationship('User', foreign_keys=[user_id],  backref=backref("user_comments", cascade="all, delete-orphan"))
+    created_at = db.Column(db.DateTime, server_default=func.now())
+    updated_at = db.Column(db.DateTime, server_default=func.now(), onupdate=func.now())
+
+
+    @classmethod
+    def validate_comment(cls, data):
+        is_valid = True
+        if len(data['content']) < 5:
+            is_valid = False
+            flash('Comment must be 5 characters long', 'error')
+
+        return is_valid
+
+    @classmethod
+    def create_comment(cls, data):
+        new_comment = Comment(**data)
+        db.session.add(new_comment)
+        db.session.commit()
+        return new_comment
+
+
+class CommentSchema(Schema):
+    id = fields.Integer()
+    content = fields.String()
+    user_id = fields.Integer()
+    blog_id = fields.Integer()
+    created_at = fields.DateTime()
+    updated_at = fields.DateTime()
+
+
+comment_schema = CommentSchema()
+
+
+
+
+
 

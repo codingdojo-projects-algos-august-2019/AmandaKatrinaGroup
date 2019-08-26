@@ -84,12 +84,14 @@ $('.icon-alert').click(function(){
 // login function switch between login and register
 $('#change_section_register, #change_section_login').click(function() {
     $('#registerForm')[0].reset();
+    $('#email_status').text('');
+    $('#modalLabel').text($(this).attr('data-header'));
     $('#login_section').toggle();
     $('#register_section').toggle();
 
 });
 $('#cancelBtn').click(function(){
-    window.location.href="/dashboard";
+    window.location.href="/";
 });
 $('#cancelEditBtn').click(function(){
     window.location.href=`/${$(this).attr('data-page')}/${$(this).attr('datasrc')}`;
@@ -143,15 +145,15 @@ $('.deleteLink').click(function(){
          data: $('#registerForm').serialize()
      })
          .done(function(response){
-             if (!emailStatus.hasClass(response.code)) {
-                 emailStatus.removeClass().addClass(response.code)
-             }
-             emailStatus.html(response.message);
-             if (response.code === 'text-danger') {
-                 $('#registerSubmit').addClass('disabled')
-             } else {
-                 $('#registerSubmit').removeClass('disabled')
-             }
+                 if (!emailStatus.hasClass(response.code)) {
+                     emailStatus.removeClass().addClass(response.code)
+                 }
+                 emailStatus.html(response.message);
+                 if (response.code === 'text-danger') {
+                     $('#registerSubmit').addClass('disabled')
+                 } else {
+                     $('#registerSubmit').removeClass('disabled')
+                 }
          });
      return false;
  });
@@ -220,6 +222,24 @@ $('#like_heart').click(function() {
         });
     return false
 });
+$('#loginForm').submit(function(){
+    const current = window.location.href;
+    $.ajax({
+        url: '/login',
+        method: 'POST',
+        data: $(this).serialize()
+    })
+        .done(function(response){
+            if (response.status === 'error'){
+                alertArea.append(`<li class="alert alert-error" role="alert">Could not be logged in<i class="fas fa-times float-right icon-alert"></i></li>`)
+                deleteAlertHandler();
+                $('.close').click()
+            } else {
+                window.location.href = current;
+            }
+        });
+    return false
+});
 // to click out of alert icons...
 $('.icon-alert').click(function(){
    $(this).parent().css('display', 'none');
@@ -236,3 +256,14 @@ $('.icon-comment').click(function(){
        });
    return false
 });
+$('#logoutBtn').click(function(){
+    const redirection = $(this).attr('data-redirect')
+       $.ajax({
+        url: '/logout',
+        method: 'POST',
+           data: {'url': redirection}
+    })
+       .done(function(){
+           window.location.href = redirection;
+    })
+})
