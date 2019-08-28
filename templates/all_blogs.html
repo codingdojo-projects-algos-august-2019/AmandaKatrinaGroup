@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300i,400,700&display=swap" rel="stylesheet">
+  <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
   <link href="{{url_for('static', filename='css/styles.css')}}" rel="stylesheet">
   <title>Blogspot</title>
   <script src="https://kit.fontawesome.com/cf01eb3235.js"></script>
@@ -17,7 +18,7 @@
     {% include 'alerts.html' with context %}
     {%  endwith %}
     <div class="container">
-    <h1 class="my-4">All {%  if tag %}{{ tag | title }}{% endif %} Blogs</h1>
+    <h2 class="my-4">All {%  if tag %}{{ tag | title }}{% endif %} Blogs {% if tag %}<small><a href="/blogs">clear filter</a></small> {% endif %}</h2>
         <div class="row">
             <div class="col-md-8">
               {%  for blog in blogs %}
@@ -45,36 +46,8 @@
             <div class="col-md-4">
                 <!-- Categories Widget TAGS NEED TO BE SET-->
                 <div class="card">
-                    <h5 class="card-header">Categories</h5>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <ul class="list-unstyled mb-0">
-                                    <li>
-                                        <a href="#">Web Design</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">HTML</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Freebies</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-lg-6">
-                                <ul class="list-unstyled mb-0">
-                                    <li>
-                                        <a href="#">JavaScript</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">CSS</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Tutorials</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                    <div class="card-body tag-background">
+                        <div id="myChart"></div>
                     </div>
                 </div>
             </div>
@@ -83,6 +56,7 @@
   {%  include 'modal.html' without context %}
   <script src="{{ url_for('static', filename='js/page.js')}}"></script>
   <script src="{{ url_for('static', filename='js/blog.js')}}"></script>
+  <script src="{{ url_for('static', filename='js/wordcloud.js')}}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
     integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
   </script>

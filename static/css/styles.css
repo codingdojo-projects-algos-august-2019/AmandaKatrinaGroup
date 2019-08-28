@@ -21,6 +21,9 @@
 small {
     font-size: 50%;
 }
+.tag-background {
+    background-color: #343a40;
+}
 .card-img {
     height: 100%;
 }
