@@ -270,3 +270,14 @@ def upload_blog_picture(id):
         file.save(os.path.join(app.config['BLOG_UPLOAD_FOLDER'], filename))
         Blog.update_picture(data={'id': id, 'filename': filename})
         return redirect('/blogs/{}'.format(id))
+
+
+def show_tag_text():
+    tags = ''
+    blog_tags = BlogTag.query.all()
+    for i, tag in enumerate(blog_tags):
+        if i == 0:
+            tags += tag.tag.text
+        else:
+            tags += ', ' + tag.tag.text
+    return {'tags': tags}
