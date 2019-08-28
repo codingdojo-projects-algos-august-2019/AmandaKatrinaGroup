@@ -19,3 +19,4 @@ app.add_url_rule('/blogs/<id>/comment/create', view_func=add_comment, methods=['
 app.add_url_rule('/comments/<id>/delete', view_func=delete_comment)
 app.add_url_rule('/blogs/<id>/edit', view_func=edit_blog, methods=['GET', 'POST'])
 app.add_url_rule('/blogs/<id>/delete', view_func=delete_blog)
+# app.add_url_rule('/all_blogs', view_func=all_blogs
