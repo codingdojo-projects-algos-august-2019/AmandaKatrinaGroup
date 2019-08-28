@@ -185,8 +185,10 @@ class Tag(db.Model):
         for tag in data['tags']:
             tag_exists = Tag.query.filter_by(text=tag).first()
             if tag_exists:
-                blog_tag = BlogTag(tag_id=tag_exists.id, blog_id=data['blog'])
-                db.session.add(blog_tag)
+                blog_tag_exists = BlogTag.query.filter_by(tag_id=tag_exists.id, blog_id=data['blog']).first()
+                if blog_tag_exists is None:
+                    blog_tag = BlogTag(tag_id=tag_exists.id, blog_id=data['blog'])
+                    db.session.add(blog_tag)
             else:
                 new_tag = Tag(text=tag)
                 db.session.add(new_tag)
