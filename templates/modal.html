@@ -1,0 +1,59 @@
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel">Login</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="loginSection">
+          <form class="login_page" id="loginForm" autocomplete="off">
+            <p class="mb-4">
+              <b>Email:</b>
+              <input type='text' name='email' class="form-control">
+            </p>
+            <p>
+              <b>Password:</b>
+              <input type='password' name='password' class="form-control">
+            </p>
+            <input type="submit" class="btn btn-primary my-3" value="Login"
+                   id="loginSubmit" data-redirect="/dashboard">
+          </form>
+          <a id="change_section_register" class="text-primary hover" data-header="Register">Register</a>
+        </div>
+        <div id="registerSection">
+         <form class="login_page" id="registerForm" autocomplete="off">
+            <p class="mb-4">
+              <b>First Name:</b>
+              <input type='text' name='first_name' class="form-control" id="firstName">
+             <span id="fn_status" class="text-danger"></span>
+            </p>
+            <p class="mb-4">
+              <b>Last Name:</b>
+              <input type='text' name='last_name' class="form-control" id="lastName">
+             <span id="ln_status" class="text-danger"></span>
+            </p>
+           <p class="mb-4">
+              <b>Email:</b>
+              <input type='text' name='email' id='email' class="form-control">
+             <span id="email_status"></span>
+            </p>
+            <p class="mb-4">
+              <b>Password:</b>
+              <input type='password' name='password' class="form-control" id="password">
+            </p>
+            <p class="mb-4">
+              <b>Confirm Password:</b>
+              <input type='password' name='confirm_password' class="form-control" id="confirm_pw">
+              <span id="pw_status"></span>
+            </p>
+           <input class="btn btn-success my-3" value="Register" id="registerSubmit">
+         </form>
+         <a id="change_section_login" class="text-primary hover" data-header="Login">Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
