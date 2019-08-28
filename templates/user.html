@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Blogspot</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link href="{{url_for('static', filename='css/styles.css')}}" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/cf01eb3235.js"></script>
+  </head>
+  <body>
+      {% include 'navbar.html' with context %}
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% include 'alerts.html' with context %}
+      {%  endwith %}
+  <div class="container mt-4">
+  {% if session['userid'] == user.id %}
+  <h3>User Dashboard</h3>
+  <!-- area to show if the user seeing the page is the logged in user, dashboard -->
+    <div class="row">
+    <div class="col col-8">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Posted</th>
+            <th>Comments</th>
+            <th class="text-center">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- this is where you iterate through the blogs -->
+          {%  for blog in user.user_blogs %}
+          <tr>
+            <td>
+              <a href="/blogs/{{ blog.id }}">{{ blog.title }}</a>
+            </td>
+            <td>{{ blog.created_at }}</td>
+            <td>{{ blog.blog_comments | length }}</td>
+            <td class="text-center">
+              <a href="/blogs/{{ blog.id }}/edit" class="text-warning mx-2"><i class="fas fa-edit"></i></a>
+              <a href="/blogs/{{ blog.id }}/delete" class="text-danger mx-2"><i class="fas fa-trash-alt"></i></a></td>
+          </tr>
+          {% endfor %}
+          <!-- endfor -->
+        </tbody>
+      </table>
+    </div>
+    <div class="col col-4">
+      <div class="card">
+        <div class="card-header">My Details</div>
+        <div class="card-body">
+          <p class="card-text">
+            Name: {{ user.first_name }} {{ user.last_name }}
+          </p>
+          <p class="card-text">
+            Email: {{ user.email }}
+          </p>
+          <p class="card-text">
+            Tagline: {{ user.tagline }}
+          </p>
+          {%  if user.facebook %}
+          <p class="card-text">
+            Facebook: {{ user.facebook }}
+          </p>
+          {% endif %}
+          {%  if user.instagram %}
+          <p class="card-text">
+            Instagram: {{ user.instagram }}
+          </p>
+          {% endif %}
+          {%  if user.twitter %}
+          <p class="card-text">
+            Twitter: {{ user.twitter }}
+          </p>
+          {% endif %}
+        </div>
+        <div class="card-footer">
+          <a href="/users/{{ user.id }}/edit" class="btn btn-sm btn-warning">Edit Profile</a>
+        </div>
+      </div>
+    </div>
+    </div>
+
+  {% else %}
+  <!-- area to show if the user seeing the page is any other person, user page with the side bar  -->
+
+
+  {% endif %}
+  </div>
+    {%  include 'modal.html' without context %}
+    <script src="{{ url_for('static', filename='js/page.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+  </body>
+</html>

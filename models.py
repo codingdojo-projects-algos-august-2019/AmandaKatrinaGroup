@@ -105,26 +105,31 @@ class User(db.Model):
     @classmethod
     def validate_update_data(cls, data):
         is_valid = True
-        if len(data['facebook']) < 5 or len(data['facebook']) > 50:
-            is_valid = False
-            flash('Facebook username must be between 5-50 characters', 'error')
-        if len(data['instagram']) > 30:
-            is_valid = False
-            flash('Instagram username must be less than 30 characters', 'error')
-        if len(data['twitter']) > 15:
-            is_valid = False
-            flash('Twitter handle must be less than 30 characters', 'error')
-        if not username_validator.match(data['facebook']):
-            is_valid = False
-            flash('Facebook username must contain letters, numbers, or period', 'error')
-        if not twitter_handle_validator.match(data['twitter']):
-            is_valid = False
-            flash('Twitter handle must contain letters, numbers, or underscore', 'error')
-        if not username_validator.match(data['instagram']):
-            is_valid = False
-            flash('Instagram username must contain letters, numbers, or period', 'error')
+        if len(data['facebook']) > 0:
+            if len(data['facebook']) < 5 or len(data['facebook']) > 50:
+                is_valid = False
+                flash('Facebook username must be between 5-50 characters', 'error')
+            else:
+                if not username_validator.match(data['facebook']):
+                    is_valid = False
+                    flash('Facebook username must contain letters, numbers, or period', 'error')
+        if len(data['instagram']) > 0:
+            if len(data['instagram']) > 30:
+                is_valid = False
+                flash('Instagram username must be less than 30 characters', 'error')
+            else:
+                if not username_validator.match(data['instagram']):
+                    is_valid = False
+                    flash('Instagram username must contain letters, numbers, or period', 'error')
+        if len(data['twitter']) > 0:
+            if len(data['twitter']) > 15:
+                is_valid = False
+                flash('Twitter handle must be less than 30 characters', 'error')
+            else:
+                if not twitter_handle_validator.match(data['twitter']):
+                    is_valid = False
+                    flash('Twitter handle must contain letters, numbers, or underscore', 'error')
         return is_valid
-
 
     @classmethod
     def update_user(cls, data):
@@ -162,7 +167,7 @@ class UserSchema(Schema):
 user_schema = UserSchema(exclude=['tagline', 'twitter', 'facebook', 'instagram', 'profile_picture'])
 
 
-update_user_schema = UserSchema(exclude=['password'])
+user_profile_schema = UserSchema(exclude=['password'])
 
 
 class Tag(db.Model):
@@ -259,6 +264,7 @@ class BlogSchema(Schema):
     content = fields.String()
     title = fields.String()
     pic_filepath = fields.String()
+    user = fields.Nested(user_profile_schema)
     blog_comments = fields.Nested('CommentSchema', many=True)
     blog_has_tags = fields.Nested('BlogTagSchema', many=True)
     user_id = fields.Integer()

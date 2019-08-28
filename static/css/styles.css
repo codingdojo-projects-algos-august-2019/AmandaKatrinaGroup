@@ -4,11 +4,6 @@
     margin: 0;
     padding: 0;
 }
-
-body {
-    padding-top: 56px;
-}
-
 .carousel-item {
     height: 65vh;
     min-height: 300px;
@@ -18,7 +13,23 @@ body {
     -o-background-size: cover;
     background-size: cover;
 }
-
+.user-img {
+    display: block;
+    margin: 0 auto;
+    width: 150px;
+}
+small {
+    font-size: 50%;
+}
+.card-img {
+    height: 100%;
+}
+.blog-card {
+    max-height: 175px;
+}
+.btn {
+    border-radius: 0 !important;
+}
 .portfolio-item {
     margin-bottom: 30px;
 }
