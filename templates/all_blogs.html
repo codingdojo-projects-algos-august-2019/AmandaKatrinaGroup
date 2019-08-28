@@ -41,6 +41,12 @@
                   </div>
                 </div>
                {%  endfor %}
+            {% if blogs | length == 0 %}
+              <span class="font-italic text-muted">
+                <h4>No blogs match your search</h4>
+                <p>Perhaps you should write one!</p>
+              </span>
+            {% endif %}
            </div>
             <!-- Sidebar Widgets Column -->
             <div class="col-md-4">
