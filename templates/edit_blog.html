@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Blog It</title>
+  <title>Blogspot</title>
   <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
   <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
@@ -13,7 +13,7 @@
 </head>
 <body>
 <!-- NOTE: this page has to use bootstrap 3 due to summernote compatibility -->
-  <nav class="navbar navbar-inverse">
+<nav class="navbar navbar-inverse">
     <div class="container">
       <div class="navbar-header">
         <a class="navbar-brand" href="/">
@@ -22,8 +22,14 @@
         </a>
       </div>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="/">Home</a></li>
+        <li><a href="/" class="text-white">Home</a></li>
           {% if session['userid']  %}
+          <li>
+              <a href="/blogs/create">Create New Blog</a>
+          </li>
+          <li>
+              <a href="/users/{{ session['userid'] }}">User Dashboard</a>
+          </li>
           <li>
             <a id="logoutBtn" class="logout" data-redirect="/">Logout <i class="fas fa-sign-out-alt"></i></a>
           </li>
@@ -43,9 +49,8 @@
       {% endif %}
       {% endwith %}
     </ul>
-  <!-- todo figure out how to add a navbar specifically to work with this since its using bootstrap 3 -->
   <div class="container">
-    <h2>Create a New Blog</h2>
+    <h2>Edit Blog</h2>
     <div class="row">
       <div class="col col-md-10">
         <form method="post" id="createBlog" enctype="multipart/form-data">

@@ -1,46 +1,15 @@
 @import url('https://fonts.googleapis.com/css?family=Grand+Hotel&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300i,400,700&display=swap');
 
+/*----- these styles will only be used in the create and edit blog area ------ */
+
+/* ----- body styles ------ */
 body {
     line-height: 1.5;
 }
-ul {
-    margin-left: 20px;
-}
-#tags {
-    margin-left: 0 !important;
-}
-#other-blogs{
-    padding: 0;
-    margin: 0;
-}
-#other-blogs li{
-    list-style: outside none none;
-}
-#createBlog{
-    padding-left: 4%;
-    padding-right: 4%;
-    margin-bottom: 20px;
-}
-#createBlog .btn {
-    border-radius: 0;
-}
-#createBlog .btn-primary {
-    background-color: #007bff;
-}
-#createBlog .btn-danger {
-    background-color: #dc3545;
-}
-blockquote {
-    font-style: italic;
-}
-#blog_img {
-    max-height: 350px;
-}
-.thumbnail {
-    max-height: 200px;
-}
-.container {
-    margin: 0 auto;
+/* styles specifically used for navbars --- */
+.text-white {
+    color: white !important;
 }
 .navbar-brand {
     font-family: 'Grand Hotel', cursive;
@@ -57,15 +26,16 @@ blockquote {
     font-size: 16px;
     padding-right: .5rem;
     padding-left: .5rem;
-    color: white;
+    color: rgba(255,255,255,.5);
 }
 .float-right {
     float: right;
 }
 .logout {
-    color: rgba(255,255,255,.5) !important;
     cursor: pointer;
 }
+
+/* ----- styles for alerts ------- */
 .alerts {
     position: absolute;
     right: 0;
@@ -92,8 +62,30 @@ blockquote {
     background-color: cornflowerblue;
     color: white;
 }
-.icon-alert,
-.icon-message {
+.icon-alert {
     position: relative;
     top: 5px;
+}
+#createBlog{
+    margin-bottom: 50px;
+}
+#createBlog .btn {
+    border-radius: 0;
+}
+#createBlog .btn-primary {
+    background-color: #007bff;
+}
+#createBlog .btn-danger {
+    background-color: #dc3545;
+}
+.thumbnail {
+    max-height: 200px;
+}
+.container {
+    margin: 0 auto;
+}
+#formUpload {
+    flex-direction: column;
+    align-items: center;
+    margin: auto;
 }

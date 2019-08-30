@@ -1,6 +1,8 @@
 # conveniently, Flask has a jsonify function
 from flask import render_template, request, redirect, session, url_for, flash, jsonify
-from models import User, user_schema, Blog, blog_schema, blogs_schema, Comment, comment_schema, Tag, BlogTag
+from models import User, user_schema, user_profile_schema,\
+    Blog, blog_schema, blogs_schema,\
+    Comment, comment_schema, Tag, BlogTag
 from config import db, app
 from dateutil.parser import parse
 from werkzeug.utils import secure_filename
@@ -10,6 +12,7 @@ import os
 
 
 ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg']
+
 
 # error pages
 def page_not_found(e):
@@ -70,6 +73,28 @@ def dashboard(user=None):
     return render_template('land.html', user=user, blogs=blogs)
 
 
+# user functions
+def show_user(id):
+    user = User.query.get(id)
+    return render_template('user.html', user=user)
+
+
+def edit_user(id):
+    if 'userid' not in session:
+        return redirect('/')
+    user = User.query.get(id)
+    if user.id != session['userid']:
+        return redirect('/')
+    if request.method == 'POST':
+        user_obj = user_profile_schema.dump(request.form)
+        validate_user_data = User.validate_update_data(user_obj.data)
+        if validate_user_data:
+            user_obj.data['id'] = session['userid']
+            User.update_user(user_obj.data)
+            return redirect('/users/{}'.format(id))
+    return render_template('edit_user.html', user=user)
+
+
 # blog functions
 def show_blog(id):
     blog = Blog.query.get(id)
@@ -79,9 +104,9 @@ def show_blog(id):
 def show_blogs():
     blog_objs = Blog.query.all()
     blogs = blogs_schema.dump(blog_objs)
-    for blog in blogs:
-        blog['comments'] = len(blog.blog_comments)
-    return render_template('land.html', blogs=blogs.data)
+    for blog in blogs.data:
+        blog['comments'] = len(blog['blog_comments'])
+    return render_template('all_blogs.html', blogs=blogs.data)
 
 
 def show_blogs_by_tag(tag):
@@ -93,7 +118,7 @@ def show_blogs_by_tag(tag):
     if blog_tags:
         for blog in blog_tags:
             blogs.append(Blog.query.get(blog.blog_id))
-    return render_template('index.html', blogs=blogs)
+    return render_template('all_blogs.html', blogs=blogs, tag=tag)
 
 
 def create_blog():
@@ -245,3 +270,14 @@ def upload_blog_picture(id):
         file.save(os.path.join(app.config['BLOG_UPLOAD_FOLDER'], filename))
         Blog.update_picture(data={'id': id, 'filename': filename})
         return redirect('/blogs/{}'.format(id))
+
+
+def show_tag_text():
+    tags = ''
+    blog_tags = BlogTag.query.all()
+    for i, tag in enumerate(blog_tags):
+        if i == 0:
+            tags += tag.tag.text
+        else:
+            tags += ', ' + tag.tag.text
+    return {'tags': tags}
