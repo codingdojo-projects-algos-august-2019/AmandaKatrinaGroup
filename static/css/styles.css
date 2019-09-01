@@ -1,35 +1,54 @@
 @import url('https://fonts.googleapis.com/css?family=Grand+Hotel&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Roboto:300i,400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Gayathri&display=swap');
+
 
 /* ---- body styles ----- */
 * {
     margin: 0;
     padding: 0;
 }
+
 /* ---- navbar styles ---- */
 .navbar-brand {
-    font-family: 'Grand Hotel', cursive;
+    font-family: 'Gayathri';
     font-size: 2em;
 }
+
+.navbar {
+    color: rgba(255, 255, 255, .5);
+}
+
+h1,
+h2 {
+    font-family: 'Gayathri';
+}
+
 /* ---- misc styles --- */
 .btn {
     border-radius: 0 !important;
 }
+
 .inline {
     display: inline-block !important;
 }
+
 small {
     font-size: 50%;
 }
+
 .tag-background {
     background-color: #343a40;
 }
+
 .hidden {
     display: none;
 }
+
 .disabled {
     cursor: not-allowed;
 }
+
 .center {
     vertical-align: middle;
 }
@@ -41,22 +60,27 @@ small {
     width: 30%;
     z-index: 1000;
 }
+
 .alert-success {
     background-color: green;
     color: white;
 }
+
 .alert-error {
     color: white;
     background-color: red;
 }
+
 .alert-warning {
     background-color: orange;
     color: white;
 }
+
 .alert-info {
     background-color: cornflowerblue;
     color: white;
 }
+
 .icon-alert {
     position: relative;
     top: 5px;
@@ -72,14 +96,17 @@ small {
     -o-background-size: cover;
     background-size: cover;
 }
+
 .thumbnail {
     max-height: 200px;
 }
+
 /* ---- styles for all blogs page --- */
 
 .blog-card {
     max-height: 175px;
 }
+
 .card-img {
     height: 100%;
 }
@@ -88,12 +115,15 @@ small {
 blockquote {
     font-style: italic;
 }
+
 ul {
     margin-left: 20px;
 }
+
 #tags {
     margin-left: 0 !important;
 }
+
 #blog_img {
     max-height: 400px;
 }
@@ -104,19 +134,25 @@ ul {
     margin: 0 auto;
     width: 150px;
 }
-#other-blogs{
+
+#other-blogs {
     padding: 0;
     margin: 0;
 }
-#other-blogs li{
+
+#other-blogs li {
     list-style: outside none none;
 }
+
 .card {
     border-radius: 0 !important;
 }
+
 /* ----- styles for forms ----- */
 #email_status,
-#pw_status, #fn_status, #ln_status {
+#pw_status,
+#fn_status,
+#ln_status {
     position: absolute;
     font-style: italic;
 }

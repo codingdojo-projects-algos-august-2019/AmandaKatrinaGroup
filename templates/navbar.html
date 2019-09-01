@@ -1,34 +1,39 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-danger static-top">
   <div class="container">
     <a class="navbar-brand text-light" href="/">
       <i class="fas fa-blog mr-3"></i>Blogspot</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-        aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+      aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
           <a class="nav-link text-white" href="/">Home</a>
         </li>
-      {%  if not error %}
+        {%  if not error %}
         {% if session['userid']  %}
         <li class="nav-item">
           <a class="nav-link" href="/blogs/create">Create New Blog</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/users/{{ session['userid'] }}">User Dashboard</a>
+          <a class="nav-link" href="/users/{{ session['userid'] }}">User Dashboard</a>
         </li>
-       {% endif %}
         <li class="nav-item">
-        {% if not session['userid'] %}
-          <a type="button" class="nav-link" href=""
-             data-toggle="modal" data-target="#loginModal">Login/Register</a>
-        {% else %}
-          <a id="logoutBtn" class="nav-link">Logout<i class="fas fa-sign-out-alt ml-2"></i></a>
+          <a class="nav-link" href="/blogs">Blogs</a>
         </li>
-       {% endif %}
-       {% endif %}
+        {% endif %}
+        <li class="nav-item">
+          {% if not session['userid'] %}
+        <li class="nav-item">
+          <a class="nav-link" href="/blogs">Blogs</a>
+        </li>
+        <a class="nav-link" href="" data-toggle="modal" data-target="#loginModal">Login/Register</a>
+        {% else %}
+        <a id="logoutBtn" class="nav-link">Logout<i class="fas fa-sign-out-alt ml-2"></i></a>
+        </li>
+        {% endif %}
+        {% endif %}
       </ul>
     </div>
   </div>

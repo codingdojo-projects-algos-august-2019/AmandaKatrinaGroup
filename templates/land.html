@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -10,11 +11,12 @@
   <script src="https://kit.fontawesome.com/cf01eb3235.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
+
 <body>
-    {% include 'navbar.html' with context %}
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% include 'alerts.html' with context %}
-    {%  endwith %}
+  {% include 'navbar.html' with context %}
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% include 'alerts.html' with context %}
+  {%  endwith %}
   <header>
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
       <ol class="carousel-indicators">
@@ -25,8 +27,8 @@
       <div class="carousel-inner" role="listbox">
         <div class="carousel-item active" style="background-image: url('https://picsum.photos/id/619/1900/1080')">
           <div class="carousel-caption d-none d-md-block">
-            <h1>Blogspot</h1>
-            <p>Blog your heart's desire</p>
+            <!-- <h1>Blogspot</h1> -->
+            <h1>Blog your heart's desire</h1>
             {%  if session['userid'] %}
             <a class="btn btn-primary" id="nav-link" href="/blogs/create">Create New Blog</a>
             {%  endif %}
@@ -34,8 +36,8 @@
         </div>
         <div class="carousel-item" style="background-image: url('https://picsum.photos/id/1014/6016/4000')">
           <div class="carousel-caption d-none d-md-block">
-            <h1>Blogspot</h1>
-            <p>Blog your heart's desire</p>
+            <!-- <h1>Blogspot</h1> -->
+            <h1>Blog your heart's desire</h1>
             {%  if session['userid'] %}
             <a class="btn btn-primary" id="nav-link" href="/blogs/create">Create New Blog</a>
             {%  endif %}
@@ -43,8 +45,8 @@
         </div>
         <div class="carousel-item" style="background-image: url('https://picsum.photos/id/1062/5092/3395')">
           <div class="carousel-caption d-none d-md-block">
-            <h1>Blogspot</h1>
-            <p>Blog your heart's desire</p>
+            <!-- <h1>Blogspot</h1> -->
+            <h1>Blog your heart's desire</h1>
             {%  if session['userid'] %}
             <a class="btn btn-primary" id="nav-link" href="/blogs/create">Create New Blog</a>
             {%  endif %}
@@ -99,4 +101,5 @@
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
   </script>
 </body>
+
 </html>
