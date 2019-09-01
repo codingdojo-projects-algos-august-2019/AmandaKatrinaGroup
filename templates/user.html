@@ -48,6 +48,11 @@
             </tr>
             {% endfor %}
             <!-- endfor -->
+            {% if user.user_blogs | length == 0 %}
+            <tr>
+              <td colspan="4">You have no blogs... Why not <a href="/blogs/create">create</a> one now?</td>
+            </tr>
+            {% endif %}
           </tbody>
         </table>
       </div>
@@ -90,7 +95,7 @@
     {% else %}
     <!-- area to show if the user seeing the page is any other person, user page with the side bar  -->
     <div class="container">
-      <div class=row>
+      <div class="row">
         <div class="col col-3">
           <div class="card my-4">
             <h5 class="card-header">{{ user.first_name }} {{user.last_name}}</h5>
