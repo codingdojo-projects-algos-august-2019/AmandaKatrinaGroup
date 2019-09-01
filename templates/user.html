@@ -44,7 +44,7 @@
               <td>{{ blog.blog_comments | length }}</td>
               <td class="text-center">
                 <a href="/blogs/{{ blog.id }}/edit" class="text-warning mx-2"><i class="fas fa-edit"></i></a>
-                <a href="/blogs/{{ blog.id }}/delete" class="text-danger mx-2"><i class="fas fa-trash-alt"></i></a></td>
+                <a class="deleteBlog text-danger mx-2"><i class="fas fa-trash-alt"></i></a></td>
             </tr>
             {% endfor %}
             <!-- endfor -->
