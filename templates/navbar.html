@@ -14,7 +14,6 @@
         <li class="nav-item">
           <a class="nav-link" href="/blogs">Blogs</a>
         </li>
-        {%  if not error %}
         {% if session['userid']  %}
         <li class="nav-item">
           <a class="nav-link" href="/blogs/create">Create New Blog</a>
@@ -29,7 +28,6 @@
         {% else %}
         <a id="logoutBtn" class="nav-link">Logout<i class="fas fa-sign-out-alt ml-2"></i></a>
         </li>
-        {% endif %}
         {% endif %}
       </ul>
     </div>

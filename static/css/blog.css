@@ -7,6 +7,12 @@
 body {
     line-height: 1.5;
 }
+.container {
+    margin: 0 auto;
+}
+.center {
+    margin: 0 auto;
+}
 /* styles specifically used for navbars --- */
 .text-white {
     color: white !important;
@@ -30,9 +36,6 @@ body {
 }
 .bg-danger {
     background-color: #dc3545;
-}
-.float-right {
-    float: right;
 }
 .logout {
     cursor: pointer;
@@ -70,6 +73,11 @@ body {
     position: relative;
     top: 5px;
 }
+.float-right {
+    float: right;
+}
+
+/* ----- styles for blog create/edit area ------ */
 #createBlog{
     margin-bottom: 50px;
 }
@@ -86,16 +94,10 @@ body {
     max-height: 200px;
     margin-bottom: 0 !important;
 }
-.container {
-    margin: 0 auto;
-}
 #formUpload {
     flex-direction: column;
     align-items: center;
     margin: auto;
-}
-.center {
-    margin: 0 auto;
 }
 /* ------- media queries -------*/
 @media screen and (max-width: 768px) {

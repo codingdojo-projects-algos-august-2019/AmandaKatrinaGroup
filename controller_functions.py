@@ -1,5 +1,4 @@
-# conveniently, Flask has a jsonify function
-from flask import render_template, request, redirect, session, url_for, flash, jsonify
+from flask import render_template, request, redirect, session, flash
 from models import User, user_schema, user_profile_schema,\
     Blog, blog_schema, blogs_schema,\
     Comment, comment_schema, Tag, BlogTag
@@ -274,28 +273,13 @@ def delete_blog_image(id):
     db.session.commit()
     return {'status': 'image deleted'}
 
-def upload_blog_picture(id):
-    if 'userid' not in session:
-        return redirect('/')
-    # check if the post request has the file part
-    if 'file' not in request.files:
-        flash('No file part', 'error')
-        return redirect(request.url)
-    file = request.files['file']
-    # if user does not select file, browser also
-    # submit an empty part without filename
-    if file.filename == '':
-        flash('No selected file', 'error')
-        return redirect(request.url)
-    if file and allowed_file(file.filename):
-        blog = Blog.query.get(id)
-        if blog.profile_picture:
-            delete_file = secure_filename(blog.profile_picture)
-            os.remove(os.path.join(app.config['BLOG_UPLOAD_FOLDER'], delete_file))
-        filename = '{}_'.format(blog.id) + secure_filename(file.filename)
-        file.save(os.path.join(app.config['BLOG_UPLOAD_FOLDER'], filename))
-        Blog.update_picture(data={'id': id, 'filename': filename})
-        return redirect('/blogs/{}'.format(id))
+
+def delete_user_image(id):
+    user = User.query.get(id)
+    delete_user_picture(user.pic_filepath)
+    user.pic_filepath = None
+    db.session.commit()
+    return {'status': 'image deleted'}
 
 
 def show_tag_text():
