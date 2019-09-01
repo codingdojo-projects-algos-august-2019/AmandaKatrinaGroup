@@ -9,6 +9,11 @@ $(document).ready(function(){
               type: 'wordcloud',
                 maxFontSize: '18px',
                 backgroundColor: 'transparent',
+                gui : {
+                    contextMenu : {
+                        empty : true
+                    }
+                    },
                   options: {
                         text: response.tags,
 

@@ -1,5 +1,4 @@
-# conveniently, Flask has a jsonify function
-from flask import render_template, request, redirect, session, url_for, flash, jsonify
+from flask import render_template, request, redirect, session, flash
 from models import User, user_schema, user_profile_schema,\
     Blog, blog_schema, blogs_schema,\
     Comment, comment_schema, Tag, BlogTag
@@ -91,6 +90,14 @@ def edit_user(id):
         if validate_user_data:
             user_obj.data['id'] = session['userid']
             User.update_user(user_obj.data)
+            if request.files['file']:
+                if user.pic_filepath is not None:
+                    delete_user_picture(user.pic_filepath)
+                file = request.files['file']
+                if file and allowed_file(file.filename):
+                    filename = '{}_'.format(id) + secure_filename(file.filename)
+                    file.save(os.path.join(app.config['USER_UPLOAD_FOLDER'], filename))
+                    User.update_picture(data={'id': id, 'filepath': filename})
             return redirect('/users/{}'.format(id))
     return render_template('edit_user.html', user=user)
 
@@ -145,7 +152,10 @@ def create_blog():
                 file.save(os.path.join(app.config['BLOG_UPLOAD_FOLDER'], filename))
                 Blog.update_picture(data={'id': new_blog.id, 'filepath': filename})
             return redirect('/blogs/{}'.format(new_blog.id))
-    return render_template('create_blog.html')
+    tags = Tag.query.all()
+    for tag in tags:
+        tag.usage = len(tag.tag_has_blogs)
+    return render_template('create_blog.html', tags=tags)
 
 
 def edit_blog(id):
@@ -156,6 +166,7 @@ def edit_blog(id):
         flash('You cannot edit this blog', 'warning')
         return redirect('/blogs/{}'.format(id))
     if request.method == 'POST':
+        print(request.form)
         tags = None
         validate_blog = blog_schema.dump(request.form)
         if validate_blog:
@@ -217,12 +228,13 @@ def delete_comment(id):
     if 'userid' not in session:
         return redirect('/')
     comment = Comment.query.get(id)
+    blog_id = comment.blog_id
     if comment.user_id != session['userid']:
         flash('You cannot delete this comment', 'error')
         return redirect('/blogs/{}'.format(id))
     db.session.delete(comment)
     db.session.commit()
-    return redirect('/blogs/{}'.format(id))
+    return redirect('/blogs/{}'.format(blog_id))
 
 
 # extra functions
@@ -248,28 +260,26 @@ def delete_blog_picture(filename):
     return
 
 
-def upload_blog_picture(id):
-    if 'userid' not in session:
-        return redirect('/')
-    # check if the post request has the file part
-    if 'file' not in request.files:
-        flash('No file part', 'error')
-        return redirect(request.url)
-    file = request.files['file']
-    # if user does not select file, browser also
-    # submit an empty part without filename
-    if file.filename == '':
-        flash('No selected file', 'error')
-        return redirect(request.url)
-    if file and allowed_file(file.filename):
-        blog = Blog.query.get(id)
-        if blog.profile_picture:
-            delete_file = secure_filename(blog.profile_picture)
-            os.remove(os.path.join(app.config['BLOG_UPLOAD_FOLDER'], delete_file))
-        filename = '{}_'.format(blog.id) + secure_filename(file.filename)
-        file.save(os.path.join(app.config['BLOG_UPLOAD_FOLDER'], filename))
-        Blog.update_picture(data={'id': id, 'filename': filename})
-        return redirect('/blogs/{}'.format(id))
+def delete_user_picture(filename):
+    delete_file = secure_filename(filename)
+    os.remove(os.path.join(app.config['USER_UPLOAD_FOLDER'], delete_file))
+    return
+
+
+def delete_blog_image(id):
+    blog = Blog.query.get(id)
+    delete_blog_picture(blog.pic_filepath)
+    blog.pic_filepath = None
+    db.session.commit()
+    return {'status': 'image deleted'}
+
+
+def delete_user_image(id):
+    user = User.query.get(id)
+    delete_user_picture(user.pic_filepath)
+    user.pic_filepath = None
+    db.session.commit()
+    return {'status': 'image deleted'}
 
 
 def show_tag_text():

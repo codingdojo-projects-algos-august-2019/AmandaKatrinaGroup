@@ -12,85 +12,146 @@
     <script src="https://kit.fontawesome.com/cf01eb3235.js"></script>
   </head>
   <body>
-      {% include 'navbar.html' with context %}
-      {% with messages = get_flashed_messages(with_categories=true) %}
-      {% include 'alerts.html' with context %}
-      {%  endwith %}
-  <div class="container mt-4">
-  {% if session['userid'] == user.id %}
-  <h3>User Dashboard</h3>
-  <!-- area to show if the user seeing the page is the logged in user, dashboard -->
-    <div class="row">
-    <div class="col col-8">
-      <table class="table table-bordered table-striped">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Posted</th>
-            <th>Comments</th>
-            <th class="text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- this is where you iterate through the blogs -->
-          {%  for blog in user.user_blogs %}
-          <tr>
-            <td>
-              <a href="/blogs/{{ blog.id }}">{{ blog.title }}</a>
-            </td>
-            <td>{{ blog.created_at }}</td>
-            <td>{{ blog.blog_comments | length }}</td>
-            <td class="text-center">
-              <a href="/blogs/{{ blog.id }}/edit" class="text-warning mx-2"><i class="fas fa-edit"></i></a>
-              <a href="/blogs/{{ blog.id }}/delete" class="text-danger mx-2"><i class="fas fa-trash-alt"></i></a></td>
-          </tr>
-          {% endfor %}
-          <!-- endfor -->
-        </tbody>
-      </table>
-    </div>
-    <div class="col col-4">
-      <div class="card">
-        <div class="card-header">My Details</div>
-        <div class="card-body">
-          <p class="card-text">
-            Name: {{ user.first_name }} {{ user.last_name }}
-          </p>
-          <p class="card-text">
-            Email: {{ user.email }}
-          </p>
-          <p class="card-text">
-            Tagline: {{ user.tagline }}
-          </p>
-          {%  if user.facebook %}
-          <p class="card-text">
-            Facebook: {{ user.facebook }}
-          </p>
-          {% endif %}
-          {%  if user.instagram %}
-          <p class="card-text">
-            Instagram: {{ user.instagram }}
-          </p>
-          {% endif %}
-          {%  if user.twitter %}
-          <p class="card-text">
-            Twitter: {{ user.twitter }}
-          </p>
-          {% endif %}
+    {% include 'navbar.html' with context %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% include 'alerts.html' with context %}
+    {%  endwith %}
+    <div class="container mt-4">
+      {% if session['userid'] == user.id %}
+      <h3>User Dashboard</h3>
+      <div class="row">
+        <div class="col col-8">
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Posted</th>
+                <th>Comments</th>
+                <th class="text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%  for blog in user.user_blogs %}
+              <tr>
+                <td>
+                  <a href="/blogs/{{ blog.id }}">{{ blog.title }}</a>
+                </td>
+                <td>{{ blog.created_at }}</td>
+                <td>{{ blog.blog_comments | length }}</td>
+                <td class="text-center">
+                  <a href="/blogs/{{ blog.id }}/edit" class="text-warning mx-2"><i class="fas fa-edit"></i></a>
+                  <a class="deleteBlog text-danger mx-2"><i class="fas fa-trash-alt"></i></a></td>
+              </tr>
+              {% endfor %}
+              {% if user.user_blogs | length == 0 %}
+              <tr>
+                <td colspan="4">You have no blogs... Why not <a href="/blogs/create">create</a> one now?</td>
+              </tr>
+              {% endif %}
+            </tbody>
+          </table>
         </div>
-        <div class="card-footer">
-          <a href="/users/{{ user.id }}/edit" class="btn btn-sm btn-warning">Edit Profile</a>
+        <div class="col col-4">
+          <div class="card">
+            <div class="card-header">My Details</div>
+            <div class="card-body">
+              <p class="card-text">
+                Name: {{ user.first_name }} {{ user.last_name }}
+              </p>
+              <p class="card-text">
+                Email: {{ user.email }}
+              </p>
+              <p class="card-text">
+                Tagline: {{ user.tagline }}
+              </p>
+              {%  if user.facebook %}
+              <p class="card-text">
+                Facebook: {{ user.facebook }}
+              </p>
+              {% endif %}
+              {%  if user.instagram %}
+              <p class="card-text">
+                Instagram: {{ user.instagram }}
+              </p>
+              {% endif %}
+              {%  if user.twitter %}
+              <p class="card-text">
+                Twitter: {{ user.twitter }}
+              </p>
+              {% endif %}
+            </div>
+            <div class="card-footer">
+              <a href="/users/{{ user.id }}/edit" class="btn btn-sm btn-warning">Edit Profile</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="container">
+        <div class="row">
+          <div class="col col-3">
+            <div class="card my-4">
+              <h5 class="card-header">{{ user.first_name }} {{user.last_name}}</h5>
+              <img class="user-img rounded-circle my-3" src="{%  if user.pic_filepath %}
+                        {{ url_for('static', filename='img/users/' + user.pic_filepath)}}
+                            {% else %} http://placehold.it/125x125 {%endif%}" alt="user image">
+              <div class="card-body">
+                <p class="text-muted font-italic">{{user.tagline or '...'}}</p>
+                <p class="text-muted"><i class="far fa-envelope mr-2"></i><a href="mailto:{{user.email}}?Subject=Blogspot%20Email">Email {{user.first_name}}</a></p>
+                <hr>
+                <h5 class="text-center">Social Links</h5>
+                <div class="row justify-content-center mb-3">
+                  {% if user.facebook %}
+                  <div class="col col-4"><a href="https://www.facebook.com/{{user.facebook}}" target="_blank"
+                      class="text-dark"><i class="fab fa-facebook-square fa-lg"></i></a></div>
+                  {% endif %}
+                  {% if user.twitter %}
+                  <div class="col col-4"><a href="https://www.twitter.com/{{user.twitter}}" target="_blank"
+                      class="text-dark"><i class="fab fa-twitter-square fa-lg"></i></a></div>
+                  {% endif %}
+                  {% if user.instagram %}
+                  <div class="col col-4"><a href="https://www.instagram.com/{{user.instagram}}" target="_blank"
+                      class="text-dark"><i class="fab fa-instagram"></i></a></div>
+                  {% endif %}
+                  {% if not user.facebook and not user.twitter and not user.instagram %}
+                  <p class="col col-12">No social media...</p>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col col-9 my-4">
+            {%  for blog in user.user_blogs %}
+            <div class="card mb-3">
+              <div class="row no-gutters">
+                <div class="col-md-4">
+                  <a href="/blogs/{{ blog.id }}"><img src="{%  if blog.pic_filepath %}
+                                {{ url_for('static', filename='img/blogs/' + blog.pic_filepath)}}
+                                    {% else %}
+                                     http://placehold.it/140x100 {% endif %}" class="card-img" alt="blog thumbnail"></a>
+                </div>
+                <div class="col-md-8 mb-3">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ blog.title }}</h5>
+                    <p class="card-text"><span class="blogContent">{{ blog.content[:150] | striptags }}...</span>
+                      <a href="/blogs/{{ blog.id }}">read more</a></p>
+                    <p class="card-text text-muted">Tags:
+                      {% for tag in blog.blog_has_tags %}
+                      <span>{{tag.tag.text}} {% if not loop.last %}, {% endif %}</span>
+                      {% endfor %}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {%  endfor %}
+
+          </div>
         </div>
       </div>
     </div>
+    {% endif %}
     </div>
-
-  {% else %}
-  <!-- area to show if the user seeing the page is any other person, user page with the side bar  -->
-
-
-  {% endif %}
-  </div>
     {%  include 'modal.html' without context %}
     <script src="{{ url_for('static', filename='js/page.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
@@ -100,4 +161,5 @@
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
   </body>
+
 </html>

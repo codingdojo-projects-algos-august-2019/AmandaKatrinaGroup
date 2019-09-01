@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Grand+Hotel&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Gayathri&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Roboto:300i,400,700&display=swap');
 
 /*----- these styles will only be used in the create and edit blog area ------ */
@@ -7,13 +7,19 @@
 body {
     line-height: 1.5;
 }
+.container {
+    margin: 0 auto;
+}
+.center {
+    margin: 0 auto;
+}
 /* styles specifically used for navbars --- */
 .text-white {
     color: white !important;
 }
 .navbar-brand {
-    font-family: 'Grand Hotel', cursive;
-    font-size: 2em;
+    font-family: 'Gayathri', sans-serif;
+    font-size: 1.75em;
     color: white !important;
 }
 .navbar {
@@ -28,8 +34,8 @@ body {
     padding-left: .5rem;
     color: rgba(255,255,255,.5);
 }
-.float-right {
-    float: right;
+.bg-danger {
+    background-color: #dc3545;
 }
 .logout {
     cursor: pointer;
@@ -63,9 +69,15 @@ body {
     color: white;
 }
 .icon-alert {
+    float: right;
     position: relative;
     top: 5px;
 }
+.float-right {
+    float: right;
+}
+
+/* ----- styles for blog create/edit area ------ */
 #createBlog{
     margin-bottom: 50px;
 }
@@ -80,12 +92,23 @@ body {
 }
 .thumbnail {
     max-height: 200px;
-}
-.container {
-    margin: 0 auto;
+    margin-bottom: 0 !important;
 }
 #formUpload {
     flex-direction: column;
     align-items: center;
     margin: auto;
+}
+/* ------- media queries -------*/
+@media screen and (max-width: 768px) {
+    .alerts {
+        width: 75%;
+    }
+}
+
+
+@media screen and (max-width: 540px) {
+    .alerts {
+        width: 100%;
+    }
 }

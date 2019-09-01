@@ -20,6 +20,7 @@ class User(db.Model):
     twitter = db.Column(db.String(15))
     instagram = db.Column(db.String(30))
     facebook = db.Column(db.String(50))
+    pic_filepath = db.Column(db.Text)
     email = db.Column(db.String(45))
     password = db.Column(db.String(100))
     created_at = db.Column(db.DateTime, server_default=func.now())
@@ -147,6 +148,12 @@ class User(db.Model):
         db.session.commit()
         return user
 
+    @classmethod
+    def update_picture(cls, data):
+        user = User.query.get(data['id'])
+        user.pic_filepath = data['filepath']
+        db.session.commit()
+        return
 
 class UserSchema(Schema):
     id = fields.Integer()
@@ -156,7 +163,7 @@ class UserSchema(Schema):
     twitter = fields.String()
     facebook = fields.String()
     instagram = fields.String()
-    profile_picture = fields.String()
+    pic_filepath = fields.String()
     email = fields.String()
     password = fields.String()
     created_at = fields.DateTime()
@@ -164,7 +171,7 @@ class UserSchema(Schema):
 
 
 # used to create a user
-user_schema = UserSchema(exclude=['tagline', 'twitter', 'facebook', 'instagram', 'profile_picture'])
+user_schema = UserSchema(exclude=['tagline', 'twitter', 'facebook', 'instagram', 'pic_filepath'])
 
 
 user_profile_schema = UserSchema(exclude=['password'])
@@ -240,10 +247,10 @@ class Blog(db.Model):
         is_valid = True
         if len(data['editordata']) < 10:
             is_valid = False
-            flash('Blog content must be at least 10 characters long', 'error')
+            flash('Content must be at least 10 characters', 'error')
         if len(data['title']) < 5:
             is_valid = False
-            flash('Blog title must be at least 5 characters long', 'error')
+            flash('Title must be at least 5 characters', 'error')
         return is_valid
 
     @classmethod

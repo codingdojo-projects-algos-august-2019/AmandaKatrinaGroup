@@ -16,61 +16,63 @@
       {% with messages = get_flashed_messages(with_categories=true) %}
       {% include 'alerts.html' with context %}
       {%  endwith %}
-  <div class="container p-5">
-    <h3>Edit Profile</h3>
-    <form id="editUserForm" action="/users/{{ user.id }}/edit" method="post" autocomplete="off">
-      <div class="row">
-        <div class="col col-6">
-          <p class="mb-4">
-            <b>First Name:</b>
-            <input type='text' name='first_name' class="form-control" id="firstName" value="{{ user.first_name }}">
-           <span id="fn_status" class="text-danger"></span>
-          </p>
-          <p class="mb-4">
-            <b>Last Name:</b>
-            <input type='text' name='last_name' class="form-control" id="lastName" value="{{ user.last_name }}">
-           <span id="ln_status" class="text-danger"></span>
-          </p>
-          <p class="mb-4">
-            <b>Email:</b>
-            <input type='text' name='email' id='email' class="form-control" value="{{ user.email }}">
-           <span id="email_status"></span>
-          </p>
-          <p class="mb-4">
-            <b>Tagline:</b>
-            {%  if user.tagline %}
-            <textarea rows="3" name='tagline' id='tagline' class="form-control">
-              {{ user.tagline }}</textarea>
-              {%  else  %}
-            <textarea rows="3" name='tagline' id='tagline' class="form-control"></textarea>
-            {% endif %}
-          </p>
-          <h4>Social Media Tags</h4>
-          <p class="mb-2">
-            <b>Facebook:</b>
-            <input type='text' name='facebook' id='facebook' class="form-control" value="{% if user.facebook %}{{ user.facebook }}{% endif %}">
-          </p>
-          <p class="mb-2">
-            <b>Twitter:</b>
-            <input type='text' name='twitter' id='twitter' class="form-control" value="{% if user.twitter %}{{ user.twitter }}{% endif %}">
-          </p>
-          <p class="mb-4">
-            <b>Instagram:</b>
-            <input type='text' name='instagram' id='instagram' class="form-control" value="{% if user.instagram %}{{ user.instagram }}{% endif %}">
-          </p>
-        </div>
-        <div class="col col-4">
-          <div class="card">
-            <div class="card-text">
-              Placeholder for maybe image later....
+    <div class="container p-5">
+      <h3>Edit Profile</h3>
+      <form id="editUserForm" action="/users/{{ user.id }}/edit" method="post" autocomplete="off"  enctype="multipart/form-data">
+        <div class="row">
+          <div class="col col-6">
+            <p class="mb-4">
+              <b>First Name:</b>
+              <input type='text' name='first_name' class="form-control" id="firstName" value="{{ user.first_name }}">
+             <span id="fn_status" class="text-danger"></span>
+            </p>
+            <p class="mb-4">
+              <b>Last Name:</b>
+              <input type='text' name='last_name' class="form-control" id="lastName" value="{{ user.last_name }}">
+             <span id="ln_status" class="text-danger"></span>
+            </p>
+            <p class="mb-4">
+              <b>Email:</b>
+              <input type='text' name='email' id='email' class="form-control" value="{{ user.email }}">
+             <span id="email_status"></span>
+            </p>
+            <p class="mb-4">
+              <b>Tagline:</b>
+              {%  if user.tagline %}
+              <textarea rows="3" name='tagline' class="form-control">{{ user.tagline }}</textarea>
+                {%  else  %}
+              <textarea rows="3" name='tagline' class="form-control"></textarea>
+              {% endif %}
+            </p>
+            <h4>Social Media Tags</h4>
+            <p class="mb-2">
+              <b>Facebook:</b>
+              <input type='text' name='facebook' id='facebook' class="form-control" value="{% if user.facebook %}{{ user.facebook }}{% endif %}">
+            </p>
+            <p class="mb-2">
+              <b>Twitter:</b>
+              <input type='text' name='twitter' id='twitter' class="form-control" value="{% if user.twitter %}{{ user.twitter }}{% endif %}">
+            </p>
+            <p class="mb-4">
+              <b>Instagram:</b>
+              <input type='text' name='instagram' id='instagram' class="form-control" value="{% if user.instagram %}{{ user.instagram }}{% endif %}">
+            </p>
+          </div>
+          <div class="col col-4">
+            <div class="card">
+              <div class="card-text p-2">
+                <p><b>Current Image:</b></p>
+                <img id="imgPreview" src="{%  if user.pic_filepath %}{{url_for('static', filename='img/users/' + user.pic_filepath)}}{%else%}#{%endif%}" class="thumbnail">
+                <p for="fileUpload"><b>Upload Image</b></p>
+                <input type=file name=file id="fileUpload" style="margin-bottom: 10px">
+              </div>
             </div>
           </div>
         </div>
-      </div>
-        <input type="submit" value="Save Changes" class="btn btn-primary">
-        <input type="button" id="cancelEditBtn" value="Cancel" class="btn btn-danger" data-page='users' datasrc="{{ user.id }}">
-    </form>
-  </div>
+          <input type="submit" value="Save Changes" class="btn btn-primary">
+          <input type="button" id="cancelEditBtn" value="Cancel" class="btn btn-danger" data-page='users' datasrc="{{ user.id }}">
+      </form>
+    </div>
     <script src="{{ url_for('static', filename='js/page.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
       integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
