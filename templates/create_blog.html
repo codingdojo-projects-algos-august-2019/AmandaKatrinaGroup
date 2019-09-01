@@ -56,9 +56,11 @@
         <input type="text" id="title" name="title" class="form-control" style="margin-bottom: 10px">
         <label for="summernote">Blog Content:</label>
         <textarea rows="5" id="summernote" name="editordata" class="form-control"></textarea>
-        <label for="fileUpload">Add Image</label>
-        <img id="imgPreview" src="#" class="thumbnail" alt="blog img">
-        <small><a class="text-danger" id="removeImg">Remove</a></small>
+        <span id="currentImgSection">
+          <label for="fileUpload">Add Image</label>
+          <img id="imgPreview" src="#" class="thumbnail" alt="blog img">
+          <small><a class="text-danger" id="removeImg">Remove</a></small>
+        </span>
         <input type=file name=file id="fileUpload" style="margin-bottom: 10px">
         <label for="tags">Tags:</label>
         <input type="text" class="form-control" name="tags" id="tags" placeholder="add one word tags separated by comma">
