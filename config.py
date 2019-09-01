@@ -11,8 +11,10 @@ app.secret_key = 'super-secret'  # set a secret key for security purposes
 
 
 BLOG_UPLOAD_FOLDER = 'static/img/blogs'
+USER_UPLOAD_FOLDER = 'static/img/users'
 
 app.config['BLOG_UPLOAD_FOLDER'] = BLOG_UPLOAD_FOLDER
+app.config['USER_UPLOAD_FOLDER'] = USER_UPLOAD_FOLDER
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)

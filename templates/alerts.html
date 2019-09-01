@@ -1,7 +1,7 @@
 <ul id="alertArea" class="list-group alerts">
   {% if messages %}
   {% for category, message in messages %}
-    <li class="alert alert-{{category}}" role="alert">{{message}}
+    <li class="list-group-item alert alert-{{category}}" role="alert">{{message}}
       <i class="fas fa-times float-right icon-alert"></i>
     </li>
   {% endfor %}

@@ -33,25 +33,32 @@
           <a href="/blogs/{{blog.id}}/edit" class="ml-3">Edit</a>
           {%  endif %}
         </p>
-
+        {%  if blog.pic_filepath %}
         <hr>
-        <img class="card-img-top" id="blog_img" src="{%  if blog.pic_filepath %}
-                      {{ url_for('static', filename='img/blogs/' + blog.pic_filepath)}}
-                          {% else %}
-                           http://placehold.it/700x400 {% endif %}" alt="Blog picture">
-
+        <img class="card-img-top" id="blog_img" src="
+                      {{ url_for('static', filename='img/blogs/' + blog.pic_filepath)}}" alt="Blog picture">
+        {% endif %}
         <hr>
         <p id="blogContent">{{ blog.content | safe}}</p>
         <hr>
         <h4 class="mb-3">Comments:</h4>
         {%  for comment in blog.blog_comments %}
         <div class="media mb-4">
-          <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+          <img class="d-flex mr-3 rounded-circle small-user-pic" src="{%  if comment.user.pic_filepath %}
+                      {{ url_for('static', filename='img/users/' + comment.user.pic_filepath)}}
+                          {% else %}
+                           http://placehold.it/50x50 {% endif %}" alt="">
           <div class="media-body">
             <h5 class="mt-0">{{ comment.user.first_name }} {{ comment.user.last_name }}</h5>
-            {{ comment.content }}
+            <p>{{ comment.content }}</p>
+            {% if comment.user_id == session['userid'] %}
+            <a href="/comments/{{comment.id}}/delete" class="text-danger">Delete</a>
+            {% endif %}
           </div>
         </div>
+        {% if not loop.last %}
+        <hr>
+        {%  endif %}
         {% endfor %}
       {% if blog.blog_comments | length == 0 %}
         <p>Be the first to leave a comment</p>
@@ -72,7 +79,7 @@
           <div class="card my-4">
               <h5 class="card-header">Leave a Comment:</h5>
               <div class="card-body">
-                  <p class="text-muted">Sign in to leave a comment</p>
+                  <p class="text-muted"><a href="" data-toggle="modal" data-target="#loginModal">Sign in</a> to leave a comment</p>
               </div>
           </div>
         {%  endif %}
@@ -99,7 +106,9 @@
         <div class="card my-4">
           <h5 class="card-header">{{ blog.user.first_name }}'s Details</h5>
           <div class="card-body">
-            <img class="user-img rounded-circle mb-3" src="http://placehold.it/125x125"
+            <img class="user-img rounded-circle mb-3" src="{%  if blog.user.pic_filepath %}
+                      {{ url_for('static', filename='img/users/' + blog.user.pic_filepath)}}
+                          {% else %} http://placehold.it/125x125 {%endif%}"
               alt="Card image cap">
           {%  if blog.user.tagline %}
             <p class="text-muted font-italic">{{ blog.user.tagline }}</p>
