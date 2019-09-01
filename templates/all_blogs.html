@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css?family=Roboto:300i,400,700&display=swap" rel="stylesheet">
@@ -12,7 +13,6 @@
   <script src="https://kit.fontawesome.com/cf01eb3235.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
-
 <body>
   {% include 'navbar.html' with context %}
   {% with messages = get_flashed_messages(with_categories=true) %}
@@ -52,9 +52,7 @@
         </span>
         {% endif %}
       </div>
-      <!-- Sidebar Widgets Column -->
       <div class="col-md-4">
-        <!-- Categories Widget TAGS NEED TO BE SET-->
         <div class="card">
           <div class="card-body tag-background">
             <div id="myChart"></div>

@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css?family=Grand+Hotel&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Roboto:300i,400,700&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Gayathri&display=swap');
 
@@ -11,8 +10,9 @@
 
 /* ---- navbar styles ---- */
 .navbar-brand {
-    font-family: 'Gayathri';
-    font-size: 2em;
+    font-family: 'Gayathri', sans-serif;
+    font-size: 1.75em;
+    padding-bottom: 0;
 }
 
 .navbar {
@@ -21,7 +21,7 @@
 
 h1,
 h2 {
-    font-family: 'Gayathri';
+    font-family: 'Gayathri', sans-serif;
 }
 
 /* ---- misc styles --- */
@@ -88,7 +88,7 @@ small {
 
 /* -- styles for land.html --- */
 .carousel-item {
-    height: 65vh;
+    height: 55vh;
     min-height: 300px;
     background: no-repeat center center scroll;
     -webkit-background-size: cover;
@@ -127,7 +127,10 @@ ul {
 #blog_img {
     max-height: 400px;
 }
-
+.small-user-pic {
+    width: 50px;
+    height: 50px;
+}
 /* -- styles for side widgets blog detail page -- */
 .user-img {
     display: block;

@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Blogspot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
   <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
@@ -13,12 +14,12 @@
 </head>
 <body>
 <!-- NOTE: this page has to use bootstrap 3 due to summernote compatibility -->
-  <nav class="navbar navbar-inverse">
+  <nav class="navbar navbar-inverse bg-danger">
     <div class="container">
       <div class="navbar-header">
         <a class="navbar-brand" href="/">
           <i class="fas fa-blog mr-3"></i>
-          Blog It
+          Blogspot
         </a>
       </div>
       <ul class="nav navbar-nav navbar-right">
@@ -52,16 +53,18 @@
       <div class="col col-md-8">
     <form method="post" id="createBlog" enctype="multipart/form-data">
       <label for="title">Title</label>
-      <input type="text" name="title" class="form-control" style="margin-bottom: 10px">
+      <input type="text" id="title" name="title" class="form-control" style="margin-bottom: 10px">
       <label for="summernote">Blog Content:</label>
       <textarea rows="5" id="summernote" name="editordata" class="form-control"></textarea>
       <label for="fileUpload">Add Image</label>
+      <img id="imgPreview" src="#" class="thumbnail" alt="blog img">
+      <small><a class="text-danger" id="removeImg">Remove</a></small>
       <input type=file name=file id="fileUpload" style="margin-bottom: 10px">
       <label for="tags">Tags:</label>
       <input type="text" class="form-control" name="tags" id="tags" placeholder="add one word tags separated by comma">
       <hr>
       <input type="submit" value="Post Blog" class="btn btn-primary">
-      <input type="button" id="cancelBtn" value="Cancel" class="btn btn-danger">
+      <input type="button" id="cancelBtn" value="Cancel" class="btn btn-danger" datasrc="{{session['userid']}}">
     </form>
     </div>
       <div class="col col-md-4">
@@ -69,39 +72,24 @@
           <div class="panel-heading">
             Tag Ideas
           </div>
-          <div class="panel-body" style="color: blue">
-            <p>#tags</p>
-            <p>#will</p>
-            <p>#go</p>
-            <p>#here</p>
-            <p>#sorted</p>
-            <p>#by</p>
-            <p>#usage</p>
+          <div class="panel-body" style="color: blue; max-height: 300px; overflow-y: auto">
+            <div class="row center">
+              <div class="col col-md-6">
+                {% for tag in tags[:(tags | length+1)//2] | sort(attribute='usage', reverse=True)%}
+                <p>{{tag.text}}</p>
+                {% endfor %}
+              </div>
+              <div class="col col-md-6">
+                {% for tag in tags[(tags | length+1)//2:] | sort(attribute='usage', reverse=True)%}
+                <p>{{tag.text}}</p>
+                {% endfor %}
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <script>
-    $(document).ready(function() {
-        $('#summernote').summernote({
-            height: 400,
-            toolbar: [
-            [ 'style', [ 'style' ] ],
-            [ 'font', [ 'bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear'] ],
-            [ 'fontname', [ 'fontname' ] ],
-            [ 'fontsize', [ 'fontsize' ] ],
-            [ 'color', [ 'color' ] ],
-            [ 'para', [ 'ol', 'ul', 'paragraph', 'height' ] ],
-            [ 'insert', [ 'link'] ],
-            [ 'view', [ 'undo', 'redo', 'fullscreen', 'codeview', 'help' ] ]
-        ],
-            codemirror: { // codemirror options
-              theme: 'monokai'
-          }
-      })
-    });
-  </script>
     <script src="{{ url_for('static', filename='js/blog.js')}}"></script>
   </body>
 </html>

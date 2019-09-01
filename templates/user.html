@@ -91,44 +91,40 @@
     <!-- area to show if the user seeing the page is any other person, user page with the side bar  -->
     <div class="container">
       <div class=row>
-        <div class="col col-4">
+        <div class="col col-3">
           <div class="card my-4">
-            <h5 class="card-header">{{ user.first_name }}'s Details</h5>
-            <img class="user-img rounded-circle mb-3 mt-4" src="http://placehold.it/125x125" alt="Card image cap">
+            <h5 class="card-header">{{ user.first_name }} {{user.last_name}}</h5>
+            <img class="user-img rounded-circle my-3" src="{%  if user.pic_filepath %}
+                      {{ url_for('static', filename='img/users/' + user.pic_filepath)}}
+                          {% else %} http://placehold.it/125x125 {%endif%}" alt="user image">
             <div class="card-body">
-              <!-- -----------------ADD TAGLINE------------------------ -->
-              <!-- {% if blogs | length == 0 %}
-                  <span class="font-italic text-muted">
-                    <h4>No blogs match your search</h4>
-                    <p>Perhaps you should write one!</p>
-                  </span>
-                  {% endif %} -->
-              ADD TAGLINE.
-            </div>
-            <hr>
-            <h5 class="text-center">Social Links</h5>
-            <div class="row justify-content-center mb-3">
-              {% if user.facebook %}
-              <div class="col col-4"><a href="https://www.facebook.com/{{user.facebook}}" target="_blank"
-                  class="text-dark"><i class="fab fa-facebook-square fa-lg"></i></a></div>
-              {% endif %}
-              {% if user.twitter %}
-              <div class="col col-4"><a href="https://www.twitter.com/{{user.twitter}}" target="_blank"
-                  class="text-dark"><i class="fab fa-twitter-square fa-lg"></i></a></div>
-              {% endif %}
-              {% if user.instagram %}
-              <div class="col col-4"><a href="https://www.instagram.com/{{user.instagram}}" target="_blank"
-                  class="text-dark"><i class="fab fa-instagram"></i></a></div>
-              {% endif %}
-              {% if not user.facebook and not user.twitter and not user.instagram %}
-              <p class="col col-12">No social media...</p>
-              {% endif %}
+              <p class="text-muted font-italic">{{user.tagline or '...'}}</p>
+              <p class="text-muted"><i class="far fa-envelope mr-2"></i><a href="mailto:{{user.email}}?Subject=Blogspot%20Email">Email {{user.first_name}}</a></p>
+              <hr>
+              <h5 class="text-center">Social Links</h5>
+              <div class="row justify-content-center mb-3">
+                {% if user.facebook %}
+                <div class="col col-4"><a href="https://www.facebook.com/{{user.facebook}}" target="_blank"
+                    class="text-dark"><i class="fab fa-facebook-square fa-lg"></i></a></div>
+                {% endif %}
+                {% if user.twitter %}
+                <div class="col col-4"><a href="https://www.twitter.com/{{user.twitter}}" target="_blank"
+                    class="text-dark"><i class="fab fa-twitter-square fa-lg"></i></a></div>
+                {% endif %}
+                {% if user.instagram %}
+                <div class="col col-4"><a href="https://www.instagram.com/{{user.instagram}}" target="_blank"
+                    class="text-dark"><i class="fab fa-instagram"></i></a></div>
+                {% endif %}
+                {% if not user.facebook and not user.twitter and not user.instagram %}
+                <p class="col col-12">No social media...</p>
+                {% endif %}
+              </div>
             </div>
           </div>
         </div>
-        <div class="col col-8 my-4">
+        <div class="col col-9 my-4">
           {%  for blog in user.user_blogs %}
-          <div class="card mb-3 blog-card">
+          <div class="card mb-3">
             <div class="row no-gutters">
               <div class="col-md-4">
                 <a href="/blogs/{{ blog.id }}"><img src="{%  if blog.pic_filepath %}
@@ -139,11 +135,13 @@
               <div class="col-md-8 mb-3">
                 <div class="card-body">
                   <h5 class="card-title">{{ blog.title }}</h5>
-                  <p class="card-text"><span class="blogContent">{{ blog.content[:75] | striptags }}...</span>
+                  <p class="card-text"><span class="blogContent">{{ blog.content[:150] | striptags }}...</span>
                     <a href="/blogs/{{ blog.id }}">read more</a></p>
-                  <p class="card-text text-muted">Posted By:
-                    {{ blog.user.first_name }}
-                    {{ blog.user.last_name }}</p>
+                  <p class="card-text text-muted">Tags:
+                    {% for tag in blog.blog_has_tags %}
+                    <span>{{tag.tag.text}} {% if not loop.last %}, {% endif %}</span>
+                    {% endfor %}
+                  </p>
                 </div>
               </div>
             </div>

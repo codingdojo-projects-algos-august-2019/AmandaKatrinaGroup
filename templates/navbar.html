@@ -11,6 +11,9 @@
         <li class="nav-item">
           <a class="nav-link text-white" href="/">Home</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/blogs">Blogs</a>
+        </li>
         {%  if not error %}
         {% if session['userid']  %}
         <li class="nav-item">
@@ -19,15 +22,9 @@
         <li class="nav-item">
           <a class="nav-link" href="/users/{{ session['userid'] }}">User Dashboard</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/blogs">Blogs</a>
-        </li>
         {% endif %}
         <li class="nav-item">
           {% if not session['userid'] %}
-        <li class="nav-item">
-          <a class="nav-link" href="/blogs">Blogs</a>
-        </li>
         <a class="nav-link" href="" data-toggle="modal" data-target="#loginModal">Login/Register</a>
         {% else %}
         <a id="logoutBtn" class="nav-link">Logout<i class="fas fa-sign-out-alt ml-2"></i></a>

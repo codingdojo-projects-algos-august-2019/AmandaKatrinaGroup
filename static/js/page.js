@@ -1,6 +1,9 @@
 $(document).ready(function(){
     $('#registerSection').hide();
     deleteAlertHandler();
+    if($('#imgPreview').attr('src') === '#'){
+        $('#imgPreview').hide();
+    }
 });
 function deleteAlertHandler() {
 $('.icon-alert').click(function(){
@@ -116,4 +119,33 @@ $('#cancelBtn').click(function(){
 });
 $('#cancelEditBtn').click(function(){
     window.location.href=`/${$(this).attr('data-page')}/${$(this).attr('datasrc')}`;
+});
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+            $('#imgPreview').attr('src', e.target.result);
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+$("#fileUpload").change(function() {
+    readURL(this);
+    $('#imgPreview').show();
+});
+$('.deleteBlog').click(function() {
+    const current = window.location.href;
+    const resp = confirm('Are you sure you want to delete blog?');
+    if (resp) {
+        $.ajax({
+            url: `/blogs/${$(this).attr('datasrc')}/delete`,
+            method: 'GET'
+        })
+                .done(function(){
+                    window.location.href = current
+                })
+
+    }
 });
