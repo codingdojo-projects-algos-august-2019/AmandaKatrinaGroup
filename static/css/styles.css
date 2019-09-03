@@ -105,7 +105,7 @@ small {
 .card-img {
     height: 100%;
 }
-.centered {
+.overlay {
     display: none;
 }
 .img-container {

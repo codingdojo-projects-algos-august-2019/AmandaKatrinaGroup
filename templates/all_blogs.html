@@ -32,7 +32,8 @@
                             {% else %}
                              http://placehold.it/140x100 {% endif %}" class="card-img" alt="blog thumbnail">
                 </a>
-               <div class="overlay"><h5 class="m-0">{{ blog.title[:25] }}
+               <div class="overlay">
+                 <h5 class="m-0">{{ blog.title[:25] }}
                {% if blog.title | length > 25 %}... {% endif %}</h5>
                <p class="m-0">by: {{ blog.user.first_name }} {{ blog.user.last_name }}</p></div>
               </div>
