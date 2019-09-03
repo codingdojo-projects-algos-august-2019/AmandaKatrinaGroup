@@ -112,6 +112,7 @@ small {
     position: relative;
     text-align: center;
     min-width: 226px;
+    height: 100%;
 }
 
 /* --- styles for blog detail  --- */
