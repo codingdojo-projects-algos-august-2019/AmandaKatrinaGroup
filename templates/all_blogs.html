@@ -25,13 +25,19 @@
           <div class="card mb-3 blog-card">
             <div class="row no-gutters">
               <div class="col-md-4">
-                <a href="/blogs/{{ blog.id }}"><img src="{%  if blog.pic_filepath %}
+              <div class="img-container">
+                <a href="/blogs/{{ blog.id }}">
+                  <img src="{%  if blog.pic_filepath %}
                         {{ url_for('static', filename='img/blogs/' + blog.pic_filepath)}}
                             {% else %}
-                             http://placehold.it/140x100 {% endif %}" class="card-img" alt="blog thumbnail"></a>
+                             http://placehold.it/140x100 {% endif %}" class="card-img" alt="blog thumbnail">
+                </a>
+               <div class="overlay"><h5 class="m-0">{{ blog.title }}</h5>
+               <p class="m-0">by: {{ blog.user.first_name }} {{ blog.user.last_name }}</p></div>
+              </div>
               </div>
               <div class="col-md-8">
-                <div class="card-body">
+                <div class="card-body d-sm-block d-none">
                   <h5 class="card-title">{{ blog.title }}</h5>
                   <p class="card-text"><span class="blogContent">{{ blog.content[:75] | striptags }}...</span>
                     <a href="/blogs/{{ blog.id }}">read more</a></p>
@@ -61,7 +67,6 @@
     </div>
     {%  include 'modal.html' without context %}
     <script src="{{ url_for('static', filename='js/page.js')}}"></script>
-    <script src="{{ url_for('static', filename='js/blog.js')}}"></script>
     <script src="{{ url_for('static', filename='js/wordcloud.js')}}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
       integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">

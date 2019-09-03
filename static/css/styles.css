@@ -102,24 +102,25 @@ small {
 }
 
 /* ---- styles for all blogs page --- */
-
-.blog-card {
-    max-height: 175px;
-}
-
 .card-img {
     height: 100%;
+}
+.centered {
+    display: none;
+}
+.img-container {
+    position: relative;
+    text-align: center;
+    min-width: 226px;
 }
 
 /* --- styles for blog detail  --- */
 blockquote {
     font-style: italic;
+    opacity: 90%;
+    width: 95%;
+    margin: 0 auto;
 }
-
-ul {
-    margin-left: 20px;
-}
-
 #tags {
     margin-left: 0 !important;
 }
@@ -131,6 +132,10 @@ ul {
     width: 50px;
     height: 50px;
 }
+#blog > ol, #blog > ul {
+    margin-left: 20px;
+}
+
 /* -- styles for side widgets blog detail page -- */
 .user-img {
     display: block;
@@ -176,9 +181,20 @@ ul {
     }
 }
 
-
 @media screen and (max-width: 540px) {
     .alerts {
         width: 100%;
+    }
+    .img-container {
+        max-height: 175px;
+    }
+    .overlay {
+        padding: 5px;
+        background-color: #0000006e;
+        display: block;
+        position: absolute;
+        color: white;
+        top: 50%;
+        left: 50%;
     }
 }

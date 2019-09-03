@@ -84,8 +84,10 @@
           </div>
         </div>
         {%  endfor %}
-        <a class="btn btn-sm btn-primary mb-5" href="/blogs">Read More &rarr;</a>
       </div>
+    <div class="text-center">
+        <a class="btn btn-sm btn-primary mb-5" href="/blogs">Read More &rarr;</a>
+    </div>
     </div>
     {%  include 'modal.html' without context %}
     <script src="{{ url_for('static', filename='js/page.js')}}"></script>
