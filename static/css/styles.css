@@ -52,7 +52,9 @@ small {
 .center {
     vertical-align: middle;
 }
-
+.user-card {
+    min-width: 275px;
+}
 /* ----- styles for alerts ------ */
 .alerts {
     position: absolute;

@@ -89,7 +89,7 @@
       {% else %}
       <div class="container">
         <div class="row">
-          <div class="col col-3">
+          <div class="col col-md-3 col-sm-8 mx-auto user-card">
             <div class="card my-4">
               <h5 class="card-header">{{ user.first_name }} {{user.last_name}}</h5>
               <img class="user-img rounded-circle my-3" src="{%  if user.pic_filepath %}
@@ -120,7 +120,7 @@
               </div>
             </div>
           </div>
-          <div class="col col-9 my-4">
+          <div class="col col-md-9 col-sm-12 my-4 mx-auto">
             {%  for blog in user.user_blogs %}
             <div class="card mb-3">
               <div class="row no-gutters">
@@ -137,7 +137,7 @@
                       <a href="/blogs/{{ blog.id }}">read more</a></p>
                     <p class="card-text text-muted">Tags:
                       {% for tag in blog.blog_has_tags %}
-                      <span>{{tag.tag.text}} {% if not loop.last %}, {% endif %}</span>
+                      <span>{{tag.tag.text}}{% if not loop.last %}, {% endif %}</span>
                       {% endfor %}
                     </p>
                   </div>
